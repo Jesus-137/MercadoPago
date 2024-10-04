@@ -21,7 +21,7 @@ export class MysqlUsuariosRepository implements Repository {
     try {
       const [data]: any = await query(sql, [uuid]);
       return new Usuarios(
-        data[0].id,
+        data[0].uuid,
         data[0].nombre,
         data[0].password,
         data[0].telefono
