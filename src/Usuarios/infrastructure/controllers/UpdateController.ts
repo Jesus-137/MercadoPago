@@ -12,10 +12,11 @@ export class UpdateController {
 
   async run(req: Request, res: Response) {
     const data = req.body;
+    const uuid = req.params.uuid
 
     try {
       const cliente = await this.updateClientesUseCase.run(
-        data.uuid,
+        uuid,
         data.nombre,
         data.password,
         data.telefono
