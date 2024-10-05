@@ -8,7 +8,7 @@ export class UpdateController {
 
   async run(req: Request, res: Response) {
     const data = req.body;
-    const uuid = req.params.uuid
+    const uuid = req.params.uuid_historial
     try {
       const cliente = await this.UpdateClienteUseCase.run(
         uuid,

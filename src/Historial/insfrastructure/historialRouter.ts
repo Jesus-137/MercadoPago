@@ -11,6 +11,6 @@ historialRouter.get(
   getAllController.run.bind(getAllController)
 );
 historialRouter.put(
-  "/:uuid",
+  "/:uuid_historial",
   updateController.run.bind(updateController)
 );

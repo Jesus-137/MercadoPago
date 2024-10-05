@@ -2,6 +2,7 @@
 
 import express from "express";
 import { getByuuidController, createController, deleteController, updateController } from "./dependencies";
+import { publicacionesRouter } from "../../Publicaciones/insfrastructure/CatalogoRouter";
 
 export const clientesRouter = express.Router();
 
@@ -21,3 +22,7 @@ clientesRouter.put(
   '/:uuid',
   updateController.run.bind(updateController)
 );
+clientesRouter.use(
+  '/publicaciones',
+  publicacionesRouter
+)

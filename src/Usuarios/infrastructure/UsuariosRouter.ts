@@ -29,6 +29,6 @@ usuariosRouter.use(
   historialRouter
 );
 usuariosRouter.use(
-  '/:uuid/reseñas',
+  '/:uuid/resenas',
   reseñasRouter
 );

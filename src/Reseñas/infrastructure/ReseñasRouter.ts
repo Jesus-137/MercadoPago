@@ -8,6 +8,6 @@ reseñasRouter.post(
   createClienteController.run.bind(createClienteController)
 );
 reseñasRouter.put(
-  "/",
+  "/:uuid_resenas",
   updateController.run.bind(updateController)
 );

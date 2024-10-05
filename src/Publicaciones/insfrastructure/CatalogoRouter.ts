@@ -21,6 +21,6 @@ publicacionesRouter.post(
   createClienteController.run.bind(createClienteController)
 );
 publicacionesRouter.use(
-  '/reseñas',
+  '/:uuid_resenas/resenas',
   reseñasRouter
 )
