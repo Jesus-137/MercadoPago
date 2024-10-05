@@ -10,9 +10,9 @@ export class CreateController {
     try {
       const clientes = await this.CreateUseCase.run(
         data.nombre,
-        data.password,
         data.tipo,
-        data.phone
+        data.telefono,
+        data.password
       );
       if (clientes)
         res.status(200).send(

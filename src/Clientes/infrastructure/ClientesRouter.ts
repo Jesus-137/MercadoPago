@@ -23,6 +23,6 @@ clientesRouter.put(
   updateController.run.bind(updateController)
 );
 clientesRouter.use(
-  '/publicaciones',
+  '/:uuid/publicaciones',
   publicacionesRouter
 )
