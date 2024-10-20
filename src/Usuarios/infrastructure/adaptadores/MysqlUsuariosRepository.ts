@@ -3,6 +3,25 @@ import { Usuarios } from "../../domain/Usuarios";
 import { Repository } from "../../domain/Repository";
 
 export class MysqlUsuariosRepository implements Repository {
+  async getAll():Promise<Usuarios[]|null>{
+    const sql = 'SELECT * FROM usuarios';
+    try {
+      const [result]: any = await query(sql, []);
+      const usuarios = Object.values(JSON.parse(JSON.stringify(result)))
+      return usuarios.map(
+        (usuario: any)=>
+          new Usuarios(
+            usuario.uuid,
+            usuario.nombre,
+            usuario.password,
+            usuario.telefono
+          )
+      );
+    } catch (error) {
+      return null;
+    }
+  }
+  
   async update(uuid: string, nombre: string, password: string, telefono: string): Promise<Usuarios | null> {
     const sql = "UPDATE usuarios SET nombre=?, password=?, telefono=? WHERE uuid=?";
     const params: any[] = [nombre, password, telefono, uuid];

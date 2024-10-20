@@ -1,6 +1,6 @@
 import express from "express";
-import { createClienteController } from "./dependencies";
-import { getAllClientesController } from "./dependencies";
+import { createClienteController, getAllController } from "./dependencies";
+import { getByuuidController } from "./dependencies";
 import { deleteController } from "./dependencies";
 import { updateController } from "./dependencies";
 import { historialRouter } from "../../Historial/insfrastructure/historialRouter";
@@ -10,7 +10,7 @@ export const  usuariosRouter = express.Router();
 
 usuariosRouter.get(
   "/:uuid",
-  getAllClientesController.run.bind(getAllClientesController)
+  getByuuidController.run.bind(getByuuidController)
 );
 usuariosRouter.delete(
   "/:uuid",
@@ -24,6 +24,10 @@ usuariosRouter.put(
   "/:uuid",
   updateController.run.bind(updateController)
 );
+usuariosRouter.get(
+  '/',
+  getAllController.run.bind(getAllController)
+)
 usuariosRouter.use(
   '/:uuid/historial',
   historialRouter

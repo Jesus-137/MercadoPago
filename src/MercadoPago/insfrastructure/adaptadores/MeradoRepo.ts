@@ -1,9 +1,8 @@
-import { Request, Response } from "express";
+import { Repository } from "../../domain/Repository";
+import { Pagos } from "../../domain/Pagos";
 
-export class Pago {
-    constructor(){}
-    async run(req: Request, res: Response){
-        const data = req.body;
+export class MercadoRepo implements Repository {
+    async createPago(cantidad: number, url: string): Promise<Pagos|null>{
         const myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${process.env.Access_Token}`);
         myHeaders.append("Content-Type", "application/json");
@@ -15,10 +14,10 @@ export class Pago {
                 "frequency_type": "months",
                 "repetitions": 12,
                 "billing_day_proportional": false,
-                "transaction_amount": data.transaction_amount,
+                "transaction_amount": cantidad,
                 "currency_id": "MXN"
             },
-            back_url: data.back_url
+            back_url: url
         });
 
         const requestOptions: RequestInit = {
@@ -28,12 +27,16 @@ export class Pago {
             redirect: "follow"
         };
 
-        fetch("https://api.mercadopago.com/preapproval_plan", requestOptions)
+        const pago = await fetch("https://api.mercadopago.com/preapproval_plan", requestOptions)
             .then((response) => response.text())
-            .then((result) => res.status(200).send({
-                url:JSON.parse(result).init_point,
-                id: JSON.parse(result).id
-            }))
-            .catch((error) => res.status(200).send(error));
+            .then((result) => new Pagos (
+                JSON.parse(result).id,
+                JSON.parse(result).init_point
+            ))
+            .catch((error) => {
+                console.log(error)
+                return null
+            });
+        return pago
     }
 }

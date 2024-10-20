@@ -1,52 +1,61 @@
 import { Request, Response } from "express";
-import { GetAllClientesUseCase } from "../../application/GetAllUseCase";
+import { GetAllUseCase } from "../../application/GetAllUseCase";
 
-export class GetAllClientesController {
-  constructor(readonly getAllProductUseCase: GetAllClientesUseCase) {}
+export class GetAllController{
+    constructor(readonly getAllUseCase: GetAllUseCase){}
 
-  async run(req: Request, res: Response) {
-    const uuid: string = String(req.params.uuid);
+    async run(req: Request, res: Response){
+        const filtros = req.query;
+        try {
+            const usuarios = await this.getAllUseCase.run();
+            if(usuarios){
+                if (filtros){
+                    let usuariosFiltrados = usuarios;
 
-    // Obtener los campos que el cliente quiere recibir desde los query params
-    const campos = req.query.fields ? String(req.query.fields).split(',') : [];
+                    Object.keys(filtros).forEach((key) => {
+                        if (key !== 'fields') { // Ignorar el campo 'campos' si está presente
+                          usuariosFiltrados = usuariosFiltrados.filter((cliente: any) => {
+                            return cliente[key] && String(cliente[key]) === String(filtros[key]);
+                          });
+                        }
+                    });
 
-    try {
-      const clientes = await this.getAllProductUseCase.run(uuid);
-
-      if (clientes) {
-        const cliente = JSON.parse(JSON.stringify(clientes))
-        // Objeto para almacenar solo los campos solicitados
-        let clientesFiltrados: any = {};
-
-        if (campos.length > 0) {
-          campos.forEach((campo) => {
-            if (cliente[campo] !== undefined) {
-              clientesFiltrados[campo] = cliente[campo];
+                    if(!(usuariosFiltrados.length>0)){
+                        res.status(400).send({
+                            status: 'No encontrado',
+                            msn: 'No se encontro el usuario'
+                        })
+                    }else{
+                        res.status(200).send({
+                            status: 'encontrado',
+                            data: usuariosFiltrados.map((usuario)=>({
+                                id: usuario.uuid,
+                                nombre: usuario.nombre,
+                                telefono: usuario.telefono
+                            }))
+                        })
+                    }
+                }else{
+                    res.status(200).send({
+                        status: 'encontrado',
+                        data: usuarios.map((usuario)=>({
+                            id: usuario.uuid,
+                            nombre: usuario.nombre,
+                            telefono: usuario.telefono
+                        }))
+                    })
+                }
+            }else{
+                res.status(400).send({
+                    status: 'error',
+                    msn: 'ocurio un error desconocido'
+                })
             }
-          });
-        } else {
-          // Si no se especifican campos, devolver todos
-          clientesFiltrados = {
-            id: clientes.uuid,
-            nombre: clientes.nombre,
-            password: clientes.password,
-            telefono: clientes.telefono,
-          };
+        } catch (error) {
+            res.status(400).send({
+                status: 'error',
+                msn: error
+            })
         }
-
-        res.status(200).send(clientesFiltrados);
-      } else {
-        res.status(400).send({
-          status: "error",
-          msn: "Ocurrió algún problema",
-        });
-      }
-    } catch (error) {
-      res.status(204).send({
-        status: "error",
-        data: "Ocurrió un error",
-        msn: error,
-      });
     }
-  }
 }

@@ -9,7 +9,7 @@ export class SendSMS{
         const authToken = process.env.Auth_Token; // Tu Auth Token
         const client = twilio(accountSid, authToken);
 
-        const code = Math.floor(1000 + Math.random() * 9000);
+        const code =Math.floor(1000 + Math.random() * 9000);
         console.log(code)
 
         client.messages
@@ -19,7 +19,7 @@ export class SendSMS{
                 contentVariables: `{"1":"${code}"}`,
                 to: `whatsapp:+521${telefono}`
             })
-            .then(message => res.status(200).send(message.sid))
+            .then(message => res.status(200).send({cd: code}))
             .catch(error => res.status(400).send({Error: error}));
     }
 }

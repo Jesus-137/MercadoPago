@@ -1,15 +1,12 @@
 import express from 'express';
 import { usuariosRouter } from './Usuarios/infrastructure/UsuariosRouter';
-import { Signale } from 'signale';
 import { clientesRouter } from './Clientes/infrastructure/ClientesRouter';
-import { mercadoRouter } from './MercadoPago/MercadoRouter';
+import { mercadoRouter } from './MercadoPago/insfrastructure/MercadoRouter'; 
 import { whatsAppRouter } from './WhatsApp/WhatsApppRouter';
-require('dotenv').config();
-const bucketName = process.env.AWS_S3_BUCKET_NAME;
-console.log(`Bucket Name: ${bucketName}`);  // Debe imprimir el nombre de tu bucket
+import cors from 'cors';
 
 const app = express();
-const signale = new Signale();
+app.use(cors());
 
 app.use(express.json());
 app.use((req, res, next) => {
@@ -25,6 +22,6 @@ app.use('/Api/v1/whatsapp', whatsAppRouter);
 
 
 const port = 3000;
-app.listen(port, () => {
-  signale.success(`Server online on port ${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server online on port ${port}`);
 });
