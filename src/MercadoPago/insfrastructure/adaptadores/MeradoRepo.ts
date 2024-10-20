@@ -29,10 +29,12 @@ export class MercadoRepo implements Repository {
 
         const pago = await fetch("https://api.mercadopago.com/preapproval_plan", requestOptions)
             .then((response) => response.text())
-            .then((result) => new Pagos (
-                JSON.parse(result).id,
-                JSON.parse(result).init_point
-            ))
+            .then((result) => {
+                console.log(result)
+                return new Pagos (
+                    JSON.parse(result).id,
+                    JSON.parse(result).init_point
+            )})
             .catch((error) => {
                 console.log(error)
                 return null

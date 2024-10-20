@@ -10,11 +10,11 @@ export class DeleteController {
     try {
       const cliente = await this.DeleteUseCase.run(uuid);
 
-      if (cliente)
+      if (cliente != '0')
         //Code HTTP : 200 -> Consulta exitosa
         res.status(200).send({
           status: "success",
-          data: cliente,
+          data: 'Se elmino correctamente',
         });
       else
         res.status(400).send({

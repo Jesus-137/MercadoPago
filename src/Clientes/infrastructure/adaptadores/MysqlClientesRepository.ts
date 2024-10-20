@@ -36,7 +36,7 @@ export class MysqlClientesRepository implements Repository {
 
   async update(uuid: string, nombre: string, tipo: string, password: string, telefono: string): Promise<Clientes | null> {
     const sql = "UPDATE clientes SET nombre=?, tipo=?, password=?, telefono=? WHERE uuid=?";
-    const params: any[] = [nombre, password, telefono, uuid];
+    const params: any[] = [nombre, tipo, password, telefono, uuid];
     try {
       const [result]: any = await query(sql, params);
       console.log(result)
@@ -50,7 +50,7 @@ export class MysqlClientesRepository implements Repository {
   async getByuuid(uuid: string): Promise<Clientes | null> {
     const sql = "SELECT * FROM clientes WHERE uuid=?;";
     try {
-      const [clientes]: any = await query(sql, []);
+      const [clientes]: any = await query(sql, [uuid]);
       return new Clientes(
         clientes[0].uuid,
         clientes[0].nombre,

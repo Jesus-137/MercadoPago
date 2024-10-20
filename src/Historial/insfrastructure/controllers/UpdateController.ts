@@ -12,7 +12,6 @@ export class UpdateController {
     try {
       const cliente = await this.UpdateClienteUseCase.run(
         uuid,
-        data.fecha_busqueda,
         data.id_usuario,
         data.busqueda
       );
@@ -22,7 +21,6 @@ export class UpdateController {
           status: "success",
           data: {
             uuid: cliente.uuid,
-            fecha_busqueda: cliente.fecha_busqueda,
             id_usuario: cliente.id_usuario,
             busqueda: cliente.busqueda
           },

@@ -12,9 +12,9 @@ export class UpdateController {
       const clientes = await this.UpdateUseCase.run(
         uuid,
         data.nombre,
-        data.password,
         data.tipo,
-        data.phone
+        data.password,
+        data.telefono
       );
       if (clientes)
         res.status(200).send(

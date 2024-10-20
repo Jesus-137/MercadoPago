@@ -24,16 +24,15 @@ export class MysqlRepository implements Repository {
 
   async update(
     uuid: string,
-    fecha_busqueda: string,
     id_usuario: string,
     busqueda: string
   ): Promise<Historial | null> {
-    const sql = "UPDATE historial SET fecha_busqueda=?, id_usuario=?, busqueda=? WHERE uuid=?";
-    const params: any[] = [fecha_busqueda, id_usuario, busqueda, uuid];
+    const sql = "UPDATE historial SET id_usuario=?, busqueda=? WHERE uuid=?";
+    const params: any[] = [id_usuario, busqueda, uuid];
     try {
       const [result]: any = await query(sql, params);
       console.log(result)
-      return new Historial(uuid, fecha_busqueda, id_usuario, busqueda);
+      return new Historial(uuid, null, id_usuario, busqueda);
     } catch (error) {
       return null;
     }

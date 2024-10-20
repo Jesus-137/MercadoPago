@@ -51,12 +51,12 @@ export class MysqlUsuariosRepository implements Repository {
   }
 
   async delete(uuid: String): Promise<string | null> {
-    const sql = "DELETE FROM Usuarios where uuid=?";
+    const sql = "DELETE FROM usuarios where uuid=?";
     const params: any[] = [uuid];
     try {
       const [result]: any = await query(sql, params);
-      console.log(result);
-      return 'Se eliminó correctamente'
+      console.log(result.affectedRows);
+      return result.affectedRows
     } catch (error) {
       return null;
     }
@@ -74,7 +74,7 @@ export class MysqlUsuariosRepository implements Repository {
     try {
       const [result]: any = await query(sql, params);
       console.log(result)
-      return new Usuarios(result.insertId, nombre, password, telefono);
+      return new Usuarios(uuid, nombre, password, telefono);
     } catch (error) {
       return null;
     }

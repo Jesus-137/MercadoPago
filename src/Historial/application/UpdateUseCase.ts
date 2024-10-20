@@ -6,14 +6,12 @@ export class UpdateUseCase {
 
   async run(
     uuid:string,
-    fecha_busqueda: string,
     id_usuario: string,
     busqueda: string
   ): Promise<Historial | null> {
     try {
       const cliente = await this.Repo.update(
         uuid,
-        fecha_busqueda,
         id_usuario,
         busqueda
       );
