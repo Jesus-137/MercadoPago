@@ -1,9 +1,5 @@
 import { Request, Response } from 'express';
 import { UpdateClientesUseCase } from '../../application/UpdateUseCase';
-import multer from 'multer';
-
-const upload = multer({ storage: multer.memoryStorage() }); // Usar almacenamiento en memoria para Multer
-console.log(upload)
 
 export class UpdateController {
   constructor(
