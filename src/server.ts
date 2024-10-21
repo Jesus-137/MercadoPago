@@ -2,7 +2,7 @@ import express from 'express';
 import { usuariosRouter } from './Usuarios/infrastructure/UsuariosRouter';
 import { clientesRouter } from './Clientes/infrastructure/ClientesRouter';
 import { mercadoRouter } from './MercadoPago/insfrastructure/MercadoRouter'; 
-import { whatsAppRouter } from './WhatsApp/WhatsApppRouter';
+import { whatsAppRouter } from './WhatsApp/infrastructure/WhatsApppRouter';
 import cors from 'cors';
 
 const app = express();
