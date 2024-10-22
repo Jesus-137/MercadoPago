@@ -9,6 +9,7 @@
 - [Installing](#installing)
 - [Building](#building)
 - [Running](#running)
+- [Running_tests](#running_tests)
 
 ## Installing
 
@@ -25,4 +26,9 @@ npm run build
 
 ```bash
 npm run start:dev
+```
+
+## Running_tests
+```bash
+npm run test
 ```
