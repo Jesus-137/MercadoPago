@@ -10,8 +10,7 @@ export class MysqlClientesRepository implements Repository {
     telefono: string,
     password: string
   ): Promise<Clientes | null> {
-    const sql =
-"INSERT INTO clientes (uuid, nombre, password, tipo, telefono) VALUES (?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO clientes (uuid, nombre, password, tipo, telefono) VALUES (?, ?, ?, ?, ?)";
     const params: any[] = [uuid, nombre, password, tipo, telefono];
     try {
       const [result]: any = await query(sql, params);

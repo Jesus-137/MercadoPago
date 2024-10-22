@@ -3,6 +3,7 @@ import { usuariosRouter } from './Usuarios/infrastructure/UsuariosRouter';
 import { clientesRouter } from './Clientes/infrastructure/ClientesRouter';
 import { mercadoRouter } from './MercadoPago/insfrastructure/MercadoRouter'; 
 import { whatsAppRouter } from './WhatsApp/infrastructure/WhatsApppRouter';
+import { leadsRouter } from './Leads/infrastructure/leadsRouter';
 import cors from 'cors';
 
 const app = express();
@@ -19,6 +20,7 @@ app.use('/Api/v1/usuarios', usuariosRouter);
 app.use('/Api/v1/clientes', clientesRouter);
 app.use('/Api/v1/mercado', mercadoRouter);
 app.use('/Api/v1/whatsapp', whatsAppRouter);
+app.use('/Api/v1/leads', leadsRouter)
 
 
 const port = 3000;

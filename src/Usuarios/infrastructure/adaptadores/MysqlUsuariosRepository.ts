@@ -36,7 +36,7 @@ export class MysqlUsuariosRepository implements Repository {
   }
   
   async getByuuid(uuid: String): Promise<Usuarios | null> {
-    const sql = "SELECT * FROM Usuarios WHERE uuid=?";
+    const sql = "SELECT * FROM usuarios WHERE uuid=?";
     try {
       const [data]: any = await query(sql, [uuid]);
       return new Usuarios(
@@ -68,8 +68,7 @@ export class MysqlUsuariosRepository implements Repository {
     password: string,
     telefono: string
   ): Promise<Usuarios | null> {
-    const sql =
-"INSERT INTO Usuarios (uuid, nombre, password, telefono) VALUES (?, ?, ?, ?)";
+    const sql = "INSERT INTO Usuarios (uuid, nombre, password, telefono) VALUES (?, ?, ?, ?)";
     const params: any[] = [uuid, nombre, password, telefono];
     try {
       const [result]: any = await query(sql, params);
