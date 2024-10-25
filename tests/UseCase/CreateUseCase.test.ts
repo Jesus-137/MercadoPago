@@ -1,6 +1,6 @@
-import { CreateUseCase } from '../../src/Clientes/application/CreateUseCase'; 
-import { Repository } from '../../src/Clientes/domain/Repository'; 
-import { Clientes } from '../../src/Clientes/domain/Clientes';
+import { CreateUseCase } from '../../src/Gestion_users/src/Clientes/application/CreateUseCase'; 
+import { Repository } from '../../src/Gestion_users/src/Clientes/domain/Repository'; 
+import { Clientes } from '../../src/Gestion_users/src/Clientes/domain/Clientes';
 
 // Mock de uuid para asegurar que siempre devuelve el mismo valor en las pruebas
 jest.mock('uuid', () => ({

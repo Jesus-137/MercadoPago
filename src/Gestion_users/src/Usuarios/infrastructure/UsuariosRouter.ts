@@ -3,7 +3,7 @@ import { createClienteController, getAllController } from "./dependencies";
 import { getByuuidController } from "./dependencies";
 import { deleteController } from "./dependencies";
 import { updateController } from "./dependencies";
-import { historialRouter } from "../../Historial/insfrastructure/historialRouter";
+import { historialRouter } from "../../Historial/insfrastructure/historialRouter"; 
 import { reseñasRouter } from "../../Reseñas/infrastructure/ReseñasRouter";
 
 export const  usuariosRouter = express.Router();

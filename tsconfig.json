@@ -17,7 +17,7 @@
   "include": [
     "src/**/**/**.ts",
     "tests/**/**.ts",
-    "playground/**/**.ts", "tests/dummy-test.js", "src/MercadoPago/insfrastructure/adaptadores/MercadoPagoRepo.ts",
+    "playground/**/**.ts", "tests/dummy-test.js", "src/Payments/src/MercadoPago/insfrastructure/adaptadores/MercadoPagoRepo.ts",
   ],
   "exclude": ["node_modules"]
 }
