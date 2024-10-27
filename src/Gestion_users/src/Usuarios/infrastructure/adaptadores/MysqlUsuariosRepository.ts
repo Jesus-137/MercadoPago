@@ -11,6 +11,7 @@ export class MysqlUsuariosRepository implements Repository {
       return usuarios.map(
         (usuario: any)=>
           new Usuarios(
+            usuario.id,
             usuario.uuid,
             usuario.nombre,
             usuario.password,
@@ -28,7 +29,7 @@ export class MysqlUsuariosRepository implements Repository {
     try {
       const [result]: any = await query(sql, params);
       console.log(result)
-      return new Usuarios(uuid, nombre, password, telefono);
+      return new Usuarios(result.insertid, uuid, nombre, password, telefono);
     } catch (error) {
       console.error("Error updating:", error);
       return null;
@@ -40,6 +41,7 @@ export class MysqlUsuariosRepository implements Repository {
     try {
       const [data]: any = await query(sql, [uuid]);
       return new Usuarios(
+        data[0].id,
         data[0].uuid,
         data[0].nombre,
         data[0].password,
@@ -73,7 +75,7 @@ export class MysqlUsuariosRepository implements Repository {
     try {
       const [result]: any = await query(sql, params);
       console.log(result)
-      return new Usuarios(uuid, nombre, password, telefono);
+      return new Usuarios(result.insertid, uuid, nombre, password, telefono);
     } catch (error) {
       return null;
     }

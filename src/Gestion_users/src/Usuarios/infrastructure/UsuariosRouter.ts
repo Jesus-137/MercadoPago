@@ -1,4 +1,6 @@
 import express from "express";
+import { limiter } from "../../../midelware/rateLimiter"; 
+
 import { createClienteController, getAllController } from "./dependencies";
 import { getByuuidController } from "./dependencies";
 import { deleteController } from "./dependencies";
@@ -18,6 +20,7 @@ usuariosRouter.delete(
 );
 usuariosRouter.post(
   "/",
+  limiter,
   createClienteController.run.bind(createClienteController)
 );
 usuariosRouter.put(
@@ -26,6 +29,7 @@ usuariosRouter.put(
 );
 usuariosRouter.get(
   '/',
+  limiter,
   getAllController.run.bind(getAllController)
 )
 usuariosRouter.use(
