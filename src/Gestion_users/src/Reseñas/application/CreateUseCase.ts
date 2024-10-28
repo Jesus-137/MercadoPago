@@ -6,8 +6,8 @@ export class CreateUseCase {
   constructor(readonly movimientoRepo: Repository) {}
 
   async run(
-    id_usuario: string,
-    id_publicacion: string,
+    id_usuario: number,
+    id_publicacion: number,
     comentario: string,
     estrellas: number
   ): Promise<Reseñas | null> {

@@ -11,28 +11,35 @@ export class UpdateController {
     const uuid = req.params.uuid_resenas
 
     try {
-      const cliente = await this.updateClientesUseCase.run(
-        uuid,
-        data.id_usuario,
-        data.id_publicacion,
-        data.comentario,
-        data.estrellas
-      );
+      const id_usuario = parseInt(data.id_usuario);
+      const id_publicacion = parseInt(data.id_publicacion);
+      const estrellas = parseInt(data.estrellas)
+      if (uuid!=''||!isNaN(id_usuario)||!isNaN(id_publicacion)||data.comentario!=''||!isNaN(estrellas)){
+        const cliente = await this.updateClientesUseCase.run(
+          uuid,
+          id_usuario,
+          id_publicacion,
+          data.comentario,
+          estrellas
+        );
 
-      if (cliente) {
-        return res.status(201).send({
-          status: 'success',
-          data: {
-            id: cliente.uuid,
-            comentario: cliente.comentario,
-            estrellas: cliente.estrellas,
-          }
-        });
-      } else {
-        return res.status(204).send({
-          status: 'error',
-          data: 'No fue posible actualizar el registro'
-        });
+        if (cliente) {
+          return res.status(201).send({
+            status: 'success',
+            data: {
+              id: cliente.uuid,
+              comentario: cliente.comentario,
+              estrellas: cliente.estrellas,
+            }
+          });
+        } else {
+          return res.status(204).send({
+            status: 'error',
+            data: 'No fue posible actualizar el registro'
+          });
+        }
+      }else{
+        throw new Error('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {
       return res.status(500).send({

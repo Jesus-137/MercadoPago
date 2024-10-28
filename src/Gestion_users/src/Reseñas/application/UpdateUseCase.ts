@@ -6,8 +6,8 @@ export class UpdateUseCase {
 
   async run(
     uuid: string,
-    id_usuario: string,
-    id_publicacion: string,
+    id_usuario: number,
+    id_publicacion: number,
     comentario: string,
     estrellas: number
   ): Promise<Reseñas | null> {

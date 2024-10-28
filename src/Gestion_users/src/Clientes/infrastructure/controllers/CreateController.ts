@@ -8,25 +8,30 @@ export class CreateController {
   async run(req: Request, res: Response) {
     const data = req.body;
     try {
-      const clientes = await this.CreateUseCase.run(
-        data.nombre,
-        data.tipo,
-        data.telefono,
-        data.password
-      );
-      if (clientes)
-        res.status(200).send(
-          {
-            id: clientes.uuid,
-            nombre: clientes.nombre,
-            tipo: clientes.tipo,
-            telefono: clientes.telefono
+      if (data.nombre!=''||data.tipo!=''||data.telefono!=''||data.password!=''){
+        const clientes = await this.CreateUseCase.run(
+          data.nombre,
+          data.tipo,
+          data.telefono,
+          data.password
+        );
+        if (clientes){
+          res.status(200).send(
+            {
+              id: clientes.uuid,
+              nombre: clientes.nombre,
+              tipo: clientes.tipo,
+              telefono: clientes.telefono
+            });
+        }else{
+          res.status(400).send({
+            status: "error",
+            msn: "Ocurrio algún problema",
           });
-      else
-        res.status(400).send({
-          status: "error",
-          msn: "Ocurrio algún problema",
-        });
+        }
+      }else{
+        throw new Error('Campos insuficientes por farvor de verificarlos')
+      }
     } catch (error) {
       //Code HTTP : 204 Sin contenido
       res.status(204).send({

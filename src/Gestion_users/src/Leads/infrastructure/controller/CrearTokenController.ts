@@ -8,19 +8,23 @@ export class CrearTokenController{
         const data = req.body;
         const uuid = req.params.uuid
         try {
-            const token = await this.crearTokenUseCase.run(
-                uuid,
-                data.username,
-                data.nombre,
-                data.telefono
-            );
-            if(token){
-                res.status(201).send({
-                    status: 'Creado',
-                    token: token
-                })
+            if (uuid!=''||data.username!=''||data.nombre!=''||data.telefono!=''){
+                const token = await this.crearTokenUseCase.run(
+                    uuid,
+                    data.username,
+                    data.nombre,
+                    data.telefono
+                );
+                if(token){
+                    res.status(201).send({
+                        status: 'Creado',
+                        token: token
+                    })
+                }else{
+                    throw new Error('Ocurio un error desconocido')
+                }
             }else{
-                throw new Error('Ocurio un error desconocido')
+                throw new Error('Campos insuficientes por favor de verificarlos');
             }
         } catch (error) {
             res.status(400).send({

@@ -6,7 +6,7 @@ export class UpdateUseCase {
 
   async run(
     uuid:string,
-    id_usuario: string,
+    id_usuario: number,
     busqueda: string
   ): Promise<Historial | null> {
     try {

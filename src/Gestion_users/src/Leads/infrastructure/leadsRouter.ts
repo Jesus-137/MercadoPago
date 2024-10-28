@@ -12,6 +12,6 @@ leadsRouter.post(
     crearTokenController.run.bind(crearTokenController)
 )
 leadsRouter.post(
-    '/verificar',
+    '/verificar/:token',
     verificarController.run.bind(verificarController)
 )

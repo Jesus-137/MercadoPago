@@ -9,28 +9,33 @@ export class CreateController {
   async run(req: Request, res: Response) {
     const data = req.body;
     try {
-      const cliente = await this.createClienteUseCase.run(
-        data.descripcion,
-        data.contenido,
-        data.id_cliente
-      );
-      if (cliente){
-        //Code HTTP : 201 -> Creado
-        res.status(201).send({
-          status: "success",
-          data: {
-            id: cliente.uuid,
-            descripcion: cliente.descripcion,
-            contenido: cliente.contenido
-          },
-        });
-        console.log('Registro exitoso')
+      const id_cliente = parseInt(data.id_cliente)
+      if (data.descripcion!=''||data.contenido!=''||!isNaN(id_cliente)){
+        const cliente = await this.createClienteUseCase.run(
+          data.descripcion,
+          data.contenido,
+          id_cliente
+        );
+        if (cliente){
+          //Code HTTP : 201 -> Creado
+          res.status(201).send({
+            status: "success",
+            data: {
+              id: cliente.uuid,
+              descripcion: cliente.descripcion,
+              contenido: cliente.contenido
+            },
+          });
+          console.log('Registro exitoso')
+        }
+        else
+          res.status(204).send({
+            status: "error",
+            data: "NO fue posible agregar el registro",
+          });
+      }else{
+        throw new Error('Campos insuficiente por favor de verificarlos');
       }
-      else
-        res.status(204).send({
-          status: "error",
-          data: "NO fue posible agregar el registro",
-        });
     } catch (error) {
       res.status(204).send({
         status: "error",

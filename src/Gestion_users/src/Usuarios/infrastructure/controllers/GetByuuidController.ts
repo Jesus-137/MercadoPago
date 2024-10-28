@@ -11,35 +11,37 @@ export class GetAllClientesController {
     const campos = req.query.fields ? String(req.query.fields).split(',') : [];
 
     try {
-      const clientes = await this.getAllProductUseCase.run(uuid);
+      if (uuid!=''){
+        const clientes = await this.getAllProductUseCase.run(uuid);
 
-      if (clientes) {
-        const cliente = JSON.parse(JSON.stringify(clientes))
-        // Objeto para almacenar solo los campos solicitados
-        let clientesFiltrados: any = {};
+        if (clientes) {
+          const cliente = JSON.parse(JSON.stringify(clientes))
+          // Objeto para almacenar solo los campos solicitados
+          let clientesFiltrados: any = {};
 
-        if (campos.length > 0) {
-          campos.forEach((campo) => {
-            if (cliente[campo] !== undefined) {
-              clientesFiltrados[campo] = cliente[campo];
-            }
-          });
+          if (campos.length > 0) {
+            campos.forEach((campo) => {
+              if (cliente[campo] !== undefined) {
+                clientesFiltrados[campo] = cliente[campo];
+              }
+            });
+          } else {
+            // Si no se especifican campos, devolver todos
+            clientesFiltrados = {
+              id: clientes.uuid,
+              nombre: clientes.nombre,
+              password: clientes.password,
+              telefono: clientes.telefono,
+            };
+          }
+
+          res.status(200).send(clientesFiltrados);
         } else {
-          // Si no se especifican campos, devolver todos
-          clientesFiltrados = {
-            id: clientes.uuid,
-            nombre: clientes.nombre,
-            password: clientes.password,
-            telefono: clientes.telefono,
-          };
+          res.status(400).send({
+            status: "error",
+            msn: "Ocurrió algún problema",
+          });
         }
-
-        res.status(200).send(clientesFiltrados);
-      } else {
-        res.status(400).send({
-          status: "error",
-          msn: "Ocurrió algún problema",
-        });
       }
     } catch (error) {
       res.status(204).send({

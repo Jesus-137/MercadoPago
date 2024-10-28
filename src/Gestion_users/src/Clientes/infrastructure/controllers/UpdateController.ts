@@ -9,26 +9,30 @@ export class UpdateController {
     const data = req.body;
     const uuid = req.params.uuid
     try {
-      const clientes = await this.UpdateUseCase.run(
-        uuid,
-        data.nombre,
-        data.tipo,
-        data.password,
-        data.telefono
-      );
-      if (clientes)
-        res.status(200).send(
-          {
-            id: clientes.uuid,
-            nombre: clientes.nombre,
-            tipo: clientes.tipo,
-            telefono: clientes.telefono
+      if (uuid!=''||data.nombre!=''||data.tipo!=''||data.password!=''||data.telefono!=''){
+        const clientes = await this.UpdateUseCase.run(
+          uuid,
+          data.nombre,
+          data.tipo,
+          data.password,
+          data.telefono
+        );
+        if (clientes)
+          res.status(200).send(
+            {
+              id: clientes.uuid,
+              nombre: clientes.nombre,
+              tipo: clientes.tipo,
+              telefono: clientes.telefono
+            });
+        else
+          res.status(400).send({
+            status: "error",
+            msn: "Ocurrio algún problema",
           });
-      else
-        res.status(400).send({
-          status: "error",
-          msn: "Ocurrio algún problema",
-        });
+      }else{
+        throw new Error('Campos insuficientes por farvor de verificarlos');
+      }
     } catch (error) {
       //Code HTTP : 204 Sin contenido
       res.status(204).send({

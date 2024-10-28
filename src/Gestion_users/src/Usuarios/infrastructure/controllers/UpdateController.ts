@@ -11,28 +11,32 @@ export class UpdateController {
     const uuid = req.params.uuid
 
     try {
-      const cliente = await this.updateClientesUseCase.run(
-        uuid,
-        data.nombre,
-        data.password,
-        data.telefono
-      );
+      if (uuid!=''||data.nombre!=''||data.password!=''||data.telefono!=''){
+        const cliente = await this.updateClientesUseCase.run(
+          uuid,
+          data.nombre,
+          data.password,
+          data.telefono
+        );
 
-      if (cliente) {
-        return res.status(201).send({
-          status: 'success',
-          data: {
-            id: cliente.uuid,
-            nombre: cliente.nombre,
-            password: cliente.password,
-            telefono: cliente.telefono
-          }
-        });
-      } else {
-        return res.status(204).send({
-          status: 'error',
-          data: 'No fue posible actualizar el registro'
-        });
+        if (cliente) {
+          return res.status(201).send({
+            status: 'success',
+            data: {
+              id: cliente.uuid,
+              nombre: cliente.nombre,
+              password: cliente.password,
+              telefono: cliente.telefono
+            }
+          });
+        } else {
+          return res.status(204).send({
+            status: 'error',
+            data: 'No fue posible actualizar el registro'
+          });
+        }
+      }else{
+        throw new Error('Campos insufisientes por favor de verificarlos')
       }
     } catch (error) {
       return res.status(500).send({
