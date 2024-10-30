@@ -1,7 +1,7 @@
 import { query } from "../../../database/mysql";
 import { LeadsUser } from "../../domain/LeadsUser";
 import { Repository } from "../../domain/Repository";
-import  jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export class MySqlRepo implements Repository{
     async crear(
@@ -14,11 +14,13 @@ export class MySqlRepo implements Repository{
         const [params]: any = [uuid, username, nombre, telefono]
         try {
             const [resultado]: any = await query(sql, params);
+
             return new LeadsUser(
-                resultado[0].uuid,
-                resultado[0].username,
-                resultado[0].nombre,
-                resultado[0].telefono
+                resultado.insertid,
+                uuid,
+                username,
+                nombre,
+                telefono
             )
         } catch (error) {
             return null

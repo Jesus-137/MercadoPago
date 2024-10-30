@@ -12,7 +12,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
-app.use('/Api/v1/payments', mercadoRouter);
+app.use('/Api/v1/mercado', mercadoRouter);
 
 
 const port = 3001;
