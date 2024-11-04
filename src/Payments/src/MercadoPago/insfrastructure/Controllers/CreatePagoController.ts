@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { CreatePagoUseCase } from "../../aplication/CreatePagoUseCase";
 import { User_Id } from "../../../../../ValueObjects/User_Id";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
+import { consumeMessages } from "../../../../../Rabbit/ConsumeUseCase";
 
 export class CreatePagoController{
     constructor(readonly createPagoUseCase: CreatePagoUseCase){}
@@ -24,6 +26,10 @@ export class CreatePagoController{
                             url: pago.url
                         },
                         mensaje: 'Se creo la url del pago'
+                    });
+                    produceMessage('pedir_token',`{"id": ${pago.id}}`)
+                    consumeMessages('token_creado', async (msg:any)=>{
+                        produceMessage('tokens', `{"id": ${pago.id}, "token": ${msg}}`)
                     })
                 }
             }else{

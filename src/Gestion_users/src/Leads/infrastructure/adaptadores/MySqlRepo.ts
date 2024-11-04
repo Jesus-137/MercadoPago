@@ -4,6 +4,22 @@ import { Repository } from "../../domain/Repository";
 import jwt from "jsonwebtoken";
 
 export class MySqlRepo implements Repository{
+    async crearTokenByid(uuid: string): Promise<string | null> {
+        try {
+            const secretKey = 'Cre4rT0kenForPagopay';
+            const payload = {
+                uuid: uuid
+            }
+            const token = await jwt.sign(payload, secretKey, {expiresIn: '1h'});
+            if(token){
+                return token;
+            }else{
+                return null;
+            }
+        } catch (error) {
+            return null
+        }
+    }
     async crear(
         uuid: string,
         username: string,

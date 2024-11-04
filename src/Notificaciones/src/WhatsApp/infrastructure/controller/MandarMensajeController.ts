@@ -5,7 +5,7 @@ import { consumeMessages } from "../../../../../Rabbit/ConsumeUseCase";
 export class MandarMensajeController {
   constructor(private mandarMensajeUseCase: MandarMensajeUseCase) {
     // Inicia el consumo de mensajes
-    consumeMessages(async (msg: string) => {
+    consumeMessages('crear_usuario', async (msg: string) => {
         console.log(msg)
         await this.mandarMensajeUseCase.run(msg);
     });

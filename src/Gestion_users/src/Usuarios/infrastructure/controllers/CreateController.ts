@@ -27,7 +27,7 @@ export class CreateClienteController {
             },
           });
           console.log('Registro exitoso')
-          produceMessage(cliente.telefono)
+          produceMessage('crear_usuario' ,cliente.telefono)
         }
         else
           res.status(204).send({

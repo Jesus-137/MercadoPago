@@ -17,4 +17,7 @@ export interface Repository{
         nombre: string,
         telefono: string
     ): Promise<string|null>
+    crearTokenByid(
+        uuid: string
+    ):Promise<string|null>
 }
