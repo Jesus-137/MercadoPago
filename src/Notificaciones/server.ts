@@ -1,6 +1,6 @@
 import express from 'express';
-import { whatsAppRouter } from './src/WhatsApp/infrastructure/WhatsApppRouter';
 import cors from 'cors';
+import { whatsAppRouter } from './src/WhatsApp/infrastructure/WhatsApppRouter';
 
 const app = express();
 app.use(cors());

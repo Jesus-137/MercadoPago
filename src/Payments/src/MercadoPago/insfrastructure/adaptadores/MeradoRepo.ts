@@ -1,8 +1,10 @@
 import { Repository } from "../../domain/Repository";
 import { Pagos } from "../../domain/Pagos";
+import dotenv from 'dotenv';
 
 export class MercadoRepo implements Repository {
     async createPago(cantidad: number, url: string): Promise<Pagos|null>{
+        dotenv.config()
         const myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${process.env.Access_Token}`);
         myHeaders.append("Content-Type", "application/json");

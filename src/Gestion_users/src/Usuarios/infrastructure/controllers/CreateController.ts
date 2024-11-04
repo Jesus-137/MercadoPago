@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CreateClientesUseCase } from "../../application/CreateUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class CreateClienteController {
   constructor (
@@ -26,6 +27,7 @@ export class CreateClienteController {
             },
           });
           console.log('Registro exitoso')
+          produceMessage(cliente.telefono)
         }
         else
           res.status(204).send({
