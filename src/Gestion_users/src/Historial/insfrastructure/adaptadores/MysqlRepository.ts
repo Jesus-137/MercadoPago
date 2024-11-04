@@ -24,7 +24,7 @@ export class MysqlRepository implements Repository {
 
   async update(
     uuid: string,
-    id_usuario: string,
+    id_usuario: number,
     busqueda: string
   ): Promise<Historial | null> {
     const sql = "UPDATE historial SET id_usuario=?, busqueda=? WHERE uuid=?";

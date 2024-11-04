@@ -1,6 +1,6 @@
 export class WhatsApp{
     constructor(
-        readonly telefono: number,
+        readonly telefono: string,
         readonly code: number
     ){}
 }
