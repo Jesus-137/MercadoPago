@@ -24,10 +24,10 @@ export class CrearController{
                         }
                     })
                 }else{
-                    throw new Error('Ocurio un error desconocido');
+                    throw ('Ocurio un error desconocido');
                 }
             }else{
-                throw new Error('Campos insuficientes por favor de verificarlos');
+                throw ('Campos insuficientes por favor de verificarlos');
             }
         } catch (error) {
             res.status(400).send({

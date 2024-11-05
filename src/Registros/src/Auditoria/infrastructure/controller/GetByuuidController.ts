@@ -16,15 +16,14 @@ export class GetByuuidController{
                             id: auditoria.uuid,
                             tarjet: auditoria.tarjet,
                             accion: auditoria.accion,
-                            creado: auditoria.fecha_creacion,
-                            actulizacion: auditoria.ultima_actualizacion
+                            creado: auditoria.fecha_creacion
                         }
                     })
                 }else{
-                    throw new Error ('Ocurio un error desconocido')
+                    throw ('Ocurio un error desconocido')
                 }
             }else{
-                throw new Error('El no se encontro id')
+                throw ('El reigistro no se encontro verificar el id')
             }
         } catch (error) {
             res.status(400).send({

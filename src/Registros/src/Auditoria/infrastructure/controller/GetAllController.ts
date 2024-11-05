@@ -15,12 +15,11 @@ export class GetAllController{
                         id: auditoria.uuid,
                         tarjet: auditoria.tarjet,
                         accion: auditoria.accion,
-                        creacion: auditoria.fecha_creacion,
-                        actualizacion: auditoria.ultima_actualizacion
+                        creacion: auditoria.fecha_creacion
                     }))
                 })
             }else{
-                throw new Error('Ocurio un error desconocido')
+                throw ('Ocurio un error desconocido')
             }
         } catch (error) {
             res.status(400).send({

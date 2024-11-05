@@ -14,7 +14,15 @@ export class CreatePagoController{
             const id = await user_id.get(uuid);
             console.log(id)
             if (id!=null){
+                let token='';
+                produceMessage('pedir_token',`{"id": ${id}}`)
+                consumeMessages('token_creado', async (msg:any)=>{
+                    token = String(msg);
+                    produceMessage('tokens', `{"id": ${id}, "token": ${msg}}`)
+                })
                 const pago = await this.createPagoUseCase.run(
+                    uuid,
+                    token,
                     data.transaction_amount,
                     data.back_url
                 );
@@ -27,10 +35,6 @@ export class CreatePagoController{
                         },
                         mensaje: 'Se creo la url del pago'
                     });
-                    produceMessage('pedir_token',`{"id": ${pago.id}}`)
-                    consumeMessages('token_creado', async (msg:any)=>{
-                        produceMessage('tokens', `{"id": ${pago.id}, "token": ${msg}}`)
-                    })
                 }
             }else{
                 throw ('El id no es valido')

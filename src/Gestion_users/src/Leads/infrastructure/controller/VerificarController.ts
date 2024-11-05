@@ -25,7 +25,7 @@ export class VerificarController{
                                 data: resultado
                             })
                         }else{
-                            throw new Error('Ocurio un error desconocido')
+                            throw ('Ocurio un error desconocido')
                         }
                     } catch (error) {
                         res.status(400).send({
@@ -34,12 +34,12 @@ export class VerificarController{
                         })
                     }
                 }else{
-                    throw new Error('Campos insuficientes por favor de verificarlos')
+                    throw ('Campos insuficientes por favor de verificarlos')
                 }
             } catch (err) {
                 res.status(400).send({
                     status: 'Error',
-                    msn: 'Token no valido'
+                    msn: err
                 })
             }
         } catch (error) {

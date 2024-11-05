@@ -30,10 +30,7 @@ export class CreateClienteController {
           produceMessage('crear_usuario' ,cliente.telefono)
         }
         else
-          res.status(204).send({
-            status: "error",
-            data: "NO fue posible agregar el registro",
-          });
+          throw("NO fue posible agregar el registro")
       }else{
         throw new Error('Campos insuficientes por favor de verificarlos');
       }

@@ -1,8 +1,9 @@
 import express from 'express';
+import cors from 'cors';
 import { usuariosRouter } from './src/Usuarios/infrastructure/UsuariosRouter';
 import { clientesRouter } from './src/Clientes/infrastructure/ClientesRouter';
 import { leadsRouter } from './src/Leads/infrastructure/leadsRouter';
-import cors from 'cors';
+import { auditoriaRouter } from '../Registros/src/Auditoria/infrastructure/AuditoriaRouter';
 
 const app = express();
 app.use(cors());
@@ -16,7 +17,8 @@ app.use((req, res, next) => {
 });
 app.use('/api/v1/usuarios', usuariosRouter);
 app.use('/api/v1/clientes', clientesRouter);
-app.use('/api/v1/leads', leadsRouter)
+app.use('/api/v1/leads', leadsRouter);
+app.use('/api/v1/registros', auditoriaRouter)
 
 
 const port = 3000;

@@ -18,14 +18,15 @@ export class CrearController{
                         data: {
                             id: auditoria.uuid,
                             tarjet: auditoria.tarjet,
-                            accion: auditoria.accion
+                            accion: auditoria.accion,
+                            creacion: auditoria.fecha_creacion
                         }
                     })
                 }else{
-                    throw new Error('Ocurio un error desconocido')
+                    throw ('Ocurio un error desconocido')
                 }
             }else{
-                throw new Error('Campos insuficientes por farvor de verificarlos')
+                throw ('Campos insuficientes por farvor de verificarlos')
             }
         } catch (error) {
             res.status(400).send({

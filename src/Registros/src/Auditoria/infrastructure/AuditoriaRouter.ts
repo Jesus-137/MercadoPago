@@ -3,7 +3,7 @@ import {
     getAllController,
     getByuuidController,
     crearController,
-    updateController } 
+} 
 from "./dependencias";
 
 export const auditoriaRouter = express.Router();
@@ -19,8 +19,4 @@ auditoriaRouter.get(
 auditoriaRouter.post(
     '/',
     crearController.run.bind(crearController)
-);
-auditoriaRouter.put(
-    '/:uuid',
-    updateController.run.bind(updateController)
 );

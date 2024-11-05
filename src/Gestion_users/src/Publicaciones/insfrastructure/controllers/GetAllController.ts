@@ -18,10 +18,7 @@ export class GetAllClientesController {
           }),
         );
       else
-        res.status(400).send({
-          status: "error",
-          msn: "Ocurrio algún problema",
-        });
+        throw ("Ocurrio algún problema desconocido")
     } catch (error) {
       //Code HTTP : 204 Sin contenido
       res.status(204).send({

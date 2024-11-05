@@ -52,10 +52,7 @@ export class GetAllClientesController {
 
         res.status(200).send(response);
       } else {
-        res.status(400).send({
-          status: "error",
-          msn: "Ocurrió algún problema",
-        });
+        throw ('Ocurio un error desconocido')
       }
     } catch (error) {
       res.status(204).send({

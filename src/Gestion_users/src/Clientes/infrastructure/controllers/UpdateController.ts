@@ -31,7 +31,7 @@ export class UpdateController {
             msn: "Ocurrio algún problema",
           });
       }else{
-        throw new Error('Campos insuficientes por farvor de verificarlos');
+        throw ('Campos insuficientes por farvor de verificarlos');
       }
     } catch (error) {
       //Code HTTP : 204 Sin contenido

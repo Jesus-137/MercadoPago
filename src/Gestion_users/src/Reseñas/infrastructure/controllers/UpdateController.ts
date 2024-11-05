@@ -39,7 +39,7 @@ export class UpdateController {
           });
         }
       }else{
-        throw new Error('Campos insuficientes por favor de verificarlos');
+        throw ('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {
       return res.status(500).send({

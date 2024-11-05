@@ -23,10 +23,7 @@ export class MandarMensajeController {
           }
         });
       } else {
-        res.status(400).send({
-          status: "Error",
-          msn: "Ocurrió un error desconocido"
-        });
+        throw ("Ocurrió un error desconocido");
       }
     } catch (error) {
       res.status(400).send({

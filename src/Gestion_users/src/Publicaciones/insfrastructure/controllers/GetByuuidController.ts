@@ -25,7 +25,7 @@ export class GetByuuidController {
             msn: "Ocurrio algún problema",
           });
       }else{
-        throw new Error('Campos insuficientes por favor de verificarlos');
+        throw ('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {
       //Code HTTP : 204 Sin contenido

@@ -2,10 +2,11 @@ import twilio from 'twilio';
 import dotenv from 'dotenv';
 import { WhatsApp } from '../../domain/WhatsApp';
 import { Repository } from '../../domain/Repository';
+import { query } from '../../../database/mysql';
 
 
 export class TwilioRepository implements Repository{
-    async mandarMensaje(telefono: string): Promise<WhatsApp | null> {
+    async mandarMensaje(uuid: string, telefono: string): Promise<WhatsApp | null> {
         dotenv.config();
         try {
             const accountSid = process.env.Account_SID; // Tu Account SID
@@ -22,12 +23,23 @@ export class TwilioRepository implements Repository{
                 contentVariables: `{"1":"${code}"}`,
                 to: `whatsapp:+521${telefono}`
             })
-            .then(message => new WhatsApp(telefono, code))
+            .then(message => {
+                console.log(message)
+                const sql = 'INSERT INTO mensajes (uuid, id_user, telefono, codigo) VALUES (?, ?, ?);';
+                const params: any[] = [uuid, telefono, code]
+                try {
+                    const [whatsapp]: any = query(sql, params);
+                    console.log(whatsapp.insertid);
+                    return new WhatsApp(uuid, telefono, code)
+                } catch (error) {
+                    return null
+                }
+            })
             .catch(error => null);
             if(whatsapp){
                 return whatsapp;
             }else
-            return null;
+                return null;
         } catch (error) {
             console.log(error);
             return null;            
