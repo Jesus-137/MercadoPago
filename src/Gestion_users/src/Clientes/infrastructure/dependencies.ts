@@ -16,7 +16,7 @@ const mysqlClientesRepository = new MysqlClientesRepository()
 const getByuuidUseCase = new GetByuuidUseCase(mysqlClientesRepository);
 const createUseCase = new CreateUseCase(mysqlClientesRepository);
 const deleteUseCase = new DeleteUseCase(mysqlClientesRepository);
-const updateUsecase = new UpdateUseCase(mysqlClientesRepository)
+const updateUsecase = new UpdateUseCase(mysqlClientesRepository);
 
 const getByuuidController = new GetByuuidController(getByuuidUseCase);
 const createController = new CreateController(createUseCase);
@@ -27,5 +27,5 @@ export {
   getByuuidController,
   createController,
   deleteController,
-  updateController
+  updateController,
 };

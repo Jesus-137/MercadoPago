@@ -24,10 +24,11 @@ export class MySqlRepo implements Repository{
         uuid: string,
         username: string,
         nombre: string,
-        telefono: string
+        telefono: string,
+        correo: string
     ): Promise<LeadsUser | null> {
-        const sql = 'INSERT INTO leads (uuid, username, nombre, telefono) values (?,?,?,?);'
-        const [params]: any = [uuid, username, nombre, telefono]
+        const sql = 'INSERT INTO leads (uuid, username, nombre, telefono, correo) values (?,?,?,?,?);'
+        const [params]: any = [uuid, username, nombre, telefono, correo]
         try {
             const [resultado]: any = await query(sql, params);
 
@@ -36,7 +37,8 @@ export class MySqlRepo implements Repository{
                 uuid,
                 username,
                 nombre,
-                telefono
+                telefono,
+                correo
             )
         } catch (error) {
             return null

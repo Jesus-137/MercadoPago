@@ -4,6 +4,7 @@ export class Usuarios {
     readonly uuid: string,
     readonly nombre: string,
     readonly password: string,
-    readonly telefono: string
+    readonly telefono: string,
+    readonly correo: string
   ) {}
 }

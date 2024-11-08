@@ -33,7 +33,7 @@ export class MercadoRepo implements Repository {
         const pago = await fetch("https://api.mercadopago.com/preapproval_plan", requestOptions)
             .then((response) => response.text())
             .then(async (result) => {
-                const sql = 'INSER INTO payments (token, id_cliente, plan) VALUES (?, ?);';
+                const sql = 'INSERT INTO payments (token, id_cliente, plan) VALUES (?, ?, ?);';
                 const params: any[] = [token, uuid, 'mes']
                 try {
                     const [pago]: any = await query(sql, params)

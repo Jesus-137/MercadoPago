@@ -8,7 +8,8 @@ export class CrearUseCase{
     async run (
         username: string,
         nombre: string,
-        telefono: string
+        telefono: string,
+        correo: string
     ): Promise<LeadsUser|null>{
         try {
             const uuid = uuidv4();
@@ -16,7 +17,8 @@ export class CrearUseCase{
                 uuid,
                 username,
                 nombre,
-                telefono
+                telefono,
+                correo
             );
             return leads;
         } catch (error) {

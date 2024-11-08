@@ -6,7 +6,10 @@ import { query } from '../../../database/mysql';
 
 
 export class TwilioRepository implements Repository{
-    async mandarMensaje(uuid: string, telefono: string): Promise<WhatsApp | null> {
+    async mandarMensaje(
+        uuid: string,
+        uuid_user: string, 
+        telefono: string): Promise<WhatsApp | null> {
         dotenv.config();
         try {
             const accountSid = process.env.Account_SID; // Tu Account SID
@@ -24,18 +27,21 @@ export class TwilioRepository implements Repository{
                 to: `whatsapp:+521${telefono}`
             })
             .then(message => {
-                console.log(message)
-                const sql = 'INSERT INTO mensajes (uuid, id_user, telefono, codigo) VALUES (?, ?, ?);';
-                const params: any[] = [uuid, telefono, code]
+                const sql = 'INSERT INTO mensajes (uuid, id_user, telefono, codigo) VALUES (?, ?, ?, ?);';
+                const params: any[] = [uuid, uuid_user, telefono, code]
                 try {
                     const [whatsapp]: any = query(sql, params);
                     console.log(whatsapp.insertid);
-                    return new WhatsApp(uuid, telefono, code)
+                    return new WhatsApp(uuid, uuid_user, telefono, code)
                 } catch (error) {
+                    console.log(error)
                     return null
                 }
             })
-            .catch(error => null);
+            .catch(error => {
+                console.log(error)
+                return null
+            });
             if(whatsapp){
                 return whatsapp;
             }else

@@ -13,7 +13,10 @@ export class CreateController {
           data.nombre,
           data.tipo,
           data.telefono,
-          data.password
+          data.password,
+          data.generos,
+          data.upicacion,
+          data.tipo_evento
         );
         if (clientes){
           res.status(200).send(

@@ -10,11 +10,12 @@ export class CreateClienteController {
   async run(req: Request, res: Response) {
     const data = req.body;
     try {
-      if (data.nombre!=''||data.password!=''||data.telefono!=''){
+      if (data.nombre!=''||data.password!=''||data.telefono!=''||data.correo!=''){
         const cliente = await this.createClienteUseCase.run(
           data.nombre,
           data.password,
-          data.telefono
+          data.telefono,
+          data.correo
         );
         if (cliente){
           //Code HTTP : 201 -> Creado
@@ -24,15 +25,16 @@ export class CreateClienteController {
               id: cliente.uuid,
               nombre: cliente.nombre,
               telefono: cliente.telefono,
+              correo: cliente.correo
             },
           });
           console.log('Registro exitoso')
-          produceMessage('crear_usuario' ,cliente.telefono)
+          produceMessage(data.sendBy, `{"id": "${cliente.uuid}", "telefono": "${cliente.telefono}", "correo": "${cliente.correo}"}`)
         }
         else
           throw("NO fue posible agregar el registro")
       }else{
-        throw new Error('Campos insuficientes por favor de verificarlos');
+        throw ('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {
       //Code HTTP : 204 Sin contenido

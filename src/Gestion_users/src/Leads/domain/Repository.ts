@@ -5,7 +5,8 @@ export interface Repository{
         uuid: string,
         username: string,
         nombre: string,
-        telefono: string
+        telefono: string,
+        sendBy: string
     ): Promise<LeadsUser|null>
     verificar(
         token: string,

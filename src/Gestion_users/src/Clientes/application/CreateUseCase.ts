@@ -9,7 +9,10 @@ export class CreateUseCase {
     nombre: string,
     password: string,
     tipo: string,
-    phone: string
+    phone: string,
+    generos: string,
+    upicacion: string,
+    tipo_evento: string
   ): Promise<Clientes | null> {
     try {
       const MyUUID = uuidv4()
@@ -18,7 +21,10 @@ export class CreateUseCase {
         nombre,
         password,
         tipo,
-        phone
+        phone,
+        generos,
+        upicacion,
+        tipo_evento
       );
       console.log(result);
       return result;

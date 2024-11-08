@@ -1,4 +1,4 @@
-export class WhatsApp{
+export class Email{
     constructor(
         readonly uuid: string,
         readonly id_user: string,

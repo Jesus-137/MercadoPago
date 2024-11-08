@@ -1,11 +1,11 @@
 import { query } from './database';
 
-export class Clientes_Id{
+export class Leads_Id{
     private user_id: number | undefined;
     constructor(){}
 
     async get (uuid: string):Promise<number|null>{
-        const sql =  'SELECT id FROM clientes WHERE uuid=?'
+        const sql =  'SELECT id FROM leads WHERE uuid=?'
         const params: any[] = [uuid]
         try {
             const [result]: any = await query(sql, params);

@@ -8,7 +8,8 @@ export class CreateClientesUseCase {
   async run(
     nombre: string,
     password: string,
-    telefono: string
+    telefono: string,
+    correo: string
   ): Promise<Usuarios | null> {
     try {
       const MyUUID = uuidv4();
@@ -16,7 +17,8 @@ export class CreateClientesUseCase {
         MyUUID,
         nombre,
         password,
-        telefono
+        telefono,
+        correo
       );
       return cliente;
     } catch (error) {
