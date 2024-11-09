@@ -4,10 +4,17 @@ import { consumeMessages } from '../../../../../Rabbit/ConsumeUseCase';
 
 export class MandarCorreoController {
     constructor(private mandarCorreoUseCase: MandarCorreoUseCase) {
-        consumeMessages('correo', async (msg)=>{
+        consumeMessages('notificacion', async (msg)=>{
             const data = JSON.parse(msg);
-            await mandarCorreoUseCase.execute(data.correo, 'Gracias por la preferencia', 
-                'Bienvenido a nuestra red social ¿Listo para empesar a buscar a su entretenimiento musical para sus futuros eventos?')
+            if(data.sendBy=='correo'){
+                if(data.msg!=''){
+                    await mandarCorreoUseCase.execute(data.correo, 'Gracias por la preferencia', 
+                        data.msg)
+                }else{
+                    await mandarCorreoUseCase.execute(data.correo, 'Gracias por la preferencia', 
+                        'Bienvenido a nuestra red social ¿Listo para empesar a buscar a su entretenimiento musical para sus futuros eventos?')
+                }
+            }
         })
     }
 

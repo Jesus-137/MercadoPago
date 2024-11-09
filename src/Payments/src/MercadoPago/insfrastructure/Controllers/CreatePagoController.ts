@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { CreatePagoUseCase } from "../../aplication/CreatePagoUseCase";
 import { Clientes_Id } from "../../../../../ValueObjects/Cliente_id";
 import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
-import { consumeMessages } from "../../../../../Rabbit/ConsumeUseCase";
 
 export class CreatePagoController{
     constructor(readonly createPagoUseCase: CreatePagoUseCase){}
@@ -14,15 +13,8 @@ export class CreatePagoController{
             const id = await user_id.get(uuid);
             console.log(id)
             if (id!=null){
-                let token='';
-                produceMessage('pedir_token',`{"id": ${uuid}}`)
-                consumeMessages('token_creado', async (msg:any)=>{
-                    token = String(msg);
-                    produceMessage('tokens', `{"id": ${id}, "token": ${msg}}`)
-                })
                 const pago = await this.createPagoUseCase.run(
                     uuid,
-                    token,
                     data.transaction_amount,
                     data.back_url
                 );
@@ -35,6 +27,11 @@ export class CreatePagoController{
                         },
                         mensaje: 'Se creo la url del pago'
                     });
+                    if(data.telefono==""){
+                        produceMessage('notificacion', `{"sendBy": "correo", "correo": "${data.correo}", "id": "${uuid}", "msg": "Ha solicitado un pago a nuestro servicio de kenstudios. Si no es el caso, favor de reportarlo respondiendo a este correo"}`)
+                    }
+                }else{
+                    throw ('Ocurio un error desconocido')
                 }
             }else{
                 throw ('El id no es valido')

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { query } from "../../../database/mysql";
 
 export class MercadoRepo implements Repository {
-    async createPago(uuid:string, token:string, cantidad: number, url: string): Promise<Pagos|null>{
+    async createPago(uuid:string, cantidad: number, url: string): Promise<Pagos|null>{
         dotenv.config();
         const myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${process.env.Access_Token}`);
@@ -33,15 +33,15 @@ export class MercadoRepo implements Repository {
         const pago = await fetch("https://api.mercadopago.com/preapproval_plan", requestOptions)
             .then((response) => response.text())
             .then(async (result) => {
-                const sql = 'INSERT INTO payments (token, id_cliente, plan) VALUES (?, ?, ?);';
-                const params: any[] = [token, uuid, 'mes']
+                const sql = 'INSERT INTO payments (uuid, id_cliente, plan) VALUES (?, ?, ?);';
+                const params: any[] = [JSON.parse(result).id, uuid, 'mes']
                 try {
                     const [pago]: any = await query(sql, params)
-                    console.log(pago.insertid)
+                    console.log(pago.insertId)
                     return new Pagos (
                         JSON.parse(result).id,
                         JSON.parse(result).init_point
-                )
+                    )
                 } catch (error) {
                     return null
                 }
