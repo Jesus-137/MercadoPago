@@ -29,6 +29,8 @@ export class CreatePagoController{
                     });
                     if(data.telefono==""){
                         produceMessage('notificacion', `{"sendBy": "correo", "correo": "${data.correo}", "id": "${uuid}", "msg": "Ha solicitado un pago a nuestro servicio de kenstudios. Si no es el caso, favor de reportarlo respondiendo a este correo"}`)
+                    }else{
+                        produceMessage("notificacion", `{"sendBy": "whatsapp", "telefono": "${data.telefono}", "id": "${uuid}"}`)
                     }
                 }else{
                     throw ('Ocurio un error desconocido')

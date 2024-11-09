@@ -29,7 +29,7 @@ export class CreateClienteController {
             },
           });
           console.log('Registro exitoso')
-          produceMessage(data.sendBy, `{"id": "${cliente.uuid}", "telefono": "${cliente.telefono}", "correo": "${cliente.correo}"}`)
+          produceMessage('notificacion', `{"id": "${cliente.uuid}", "sendBy": "${data.sendBy}", "telefono": "${cliente.telefono}", "correo": "${cliente.correo}"}`)
         }
         else
           throw("NO fue posible agregar el registro")

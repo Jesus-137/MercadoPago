@@ -6,9 +6,11 @@ import { Leads_Id } from "../../../../../ValueObjects/Leads_id";
 export class MandarMensajeController {
   constructor(private mandarMensajeUseCase: MandarMensajeUseCase) {
     // Inicia el consumo de mensajes
-    consumeMessages('whatsapp', async (msg: string) => {
+    consumeMessages('notificacion', async (msg: string) => {
         const data = JSON.parse(msg)
-        await this.mandarMensajeUseCase.run(data.id, data.telefono);
+        if (data.sendBy = 'whatsapp'){
+          await this.mandarMensajeUseCase.run(data.id, data.telefono);
+        }
     });
   }
 

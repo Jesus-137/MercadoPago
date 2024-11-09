@@ -11,6 +11,7 @@ export class MandarCorreoController {
                     await mandarCorreoUseCase.execute(data.correo, 'Gracias por la preferencia', 
                         data.msg)
                 }else{
+                    console.log("hola")
                     await mandarCorreoUseCase.execute(data.correo, 'Gracias por la preferencia', 
                         'Bienvenido a nuestra red social ¿Listo para empesar a buscar a su entretenimiento musical para sus futuros eventos?')
                 }
