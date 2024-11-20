@@ -1,5 +1,9 @@
 import { WhatsApp } from "./WhatsApp";
 
 export interface Repository{
-    mandarMensaje(telefono:string): Promise<WhatsApp|null>
+    mandarMensaje(
+        uuid: string,
+        uuid_user: string,
+        telefono: string
+    ): Promise<WhatsApp|null>
 }

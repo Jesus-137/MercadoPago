@@ -1,18 +1,16 @@
 import amqplib from 'amqplib';
 
-export async function produceMessage(telefono: string) {
+export async function produceMessage(cola: string, data: string) {
   try {
     // Conectar a RabbitMQ
     const connection = await amqplib.connect('amqp://localhost:5672');
     const channel = await connection.createChannel();
 
-    // Crear o asegurarse de que la cola existe
-    const queue = 'crear_usuario';
-    await channel.assertQueue(queue, { durable: true });
+    await channel.assertQueue(cola, { durable: true });
 
     // Mensaje que quieres enviar
-    const message = telefono;
-    channel.sendToQueue(queue, Buffer.from(message), { persistent: true });
+    const message = data;
+    channel.sendToQueue(cola, Buffer.from(message), { persistent: true });
 
     console.log(`Mensaje enviado: ${message}`);
 

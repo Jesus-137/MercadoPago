@@ -9,12 +9,14 @@ export interface Repository {
     uuid: string,
     nombre: string,
     password: string,
-    telefono: string
+    telefono: string,
+    correo: string
   ): Promise<Usuarios | null>;
   update(
     uuid:string,
     nombre: string,
     password: string,
-    telefono: string
+    telefono: string,
+    correo: string
   ): Promise<Usuarios|null>;
 }

@@ -15,6 +15,9 @@ export interface Repository {
     nombre: string,
     tipo: string,
     telefono: string,
-    password: string
+    password: string,
+    generos: string,
+    upicacion: string,
+    tipo_evento: string
   ): Promise <Clientes |  null>
 }

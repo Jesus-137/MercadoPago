@@ -35,12 +35,12 @@ export class GetAllClientesController {
             };
           }
 
-          res.status(200).send(clientesFiltrados);
-        } else {
-          res.status(400).send({
-            status: "error",
-            msn: "Ocurrió algún problema",
+          res.status(200).send({
+            status: 'Encontrado',
+            data: clientesFiltrados
           });
+        } else {
+          throw ("Ocurrió algún problema");
         }
       }
     } catch (error) {

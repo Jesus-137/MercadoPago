@@ -4,14 +4,31 @@ import { Repository } from "../../domain/Repository";
 import jwt from "jsonwebtoken";
 
 export class MySqlRepo implements Repository{
+    async crearTokenByid(uuid: string): Promise<string | null> {
+        try {
+            const secretKey = 'Cre4rT0kenForPagopay';
+            const payload = {
+                uuid: uuid
+            }
+            const token = await jwt.sign(payload, secretKey, {expiresIn: '1h'});
+            if(token){
+                return token;
+            }else{
+                return null;
+            }
+        } catch (error) {
+            return null
+        }
+    }
     async crear(
         uuid: string,
         username: string,
         nombre: string,
-        telefono: string
+        telefono: string,
+        correo: string
     ): Promise<LeadsUser | null> {
-        const sql = 'INSERT INTO leads (uuid, username, nombre, telefono) values (?,?,?,?);'
-        const [params]: any = [uuid, username, nombre, telefono]
+        const sql = 'INSERT INTO leads (uuid, username, nombre, telefono, correo) values (?,?,?,?,?);'
+        const [params]: any = [uuid, username, nombre, telefono, correo]
         try {
             const [resultado]: any = await query(sql, params);
 
@@ -20,7 +37,8 @@ export class MySqlRepo implements Repository{
                 uuid,
                 username,
                 nombre,
-                telefono
+                telefono,
+                correo
             )
         } catch (error) {
             return null

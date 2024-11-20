@@ -23,10 +23,7 @@ export class GetAllController {
         });
 
         if (!(usuariosFiltrados.length > 0)) {
-          return res.status(400).send({
-            status: 'No encontrado',
-            msn: 'No se encontró el usuario'
-          });
+          throw ('No se encontró el usuario');
         }
 
         // Mapear datos a los campos especificados en 'fields' o a los predeterminados
@@ -54,10 +51,7 @@ export class GetAllController {
           data
         });
       } else {
-        return res.status(400).send({
-          status: 'error',
-          msn: 'Ocurrió un error desconocido'
-        });
+        throw ('Ocurrió un error desconocido');
       }
     } catch (error) {
       return res.status(400).send({

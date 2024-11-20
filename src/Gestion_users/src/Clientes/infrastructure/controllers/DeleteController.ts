@@ -23,7 +23,7 @@ export class DeleteController {
             msn: "Ocurrio algún problema",
           });
       }else{
-        throw new Error('No se encontro el id')
+        throw ('No se encontro el usuario verificar el id')
       }
     } catch (error) {
       //Code HTTP : 204 Sin contenido

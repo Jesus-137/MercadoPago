@@ -29,12 +29,9 @@ export class CreateController {
           console.log('Registro exitoso')
         }
         else
-          res.status(204).send({
-            status: "error",
-            data: "NO fue posible agregar el registro",
-          });
+          throw ("NO fue posible agregar el registro");
       }else{
-        throw new Error('Campos insuficiente por favor de verificarlos');
+        throw ('Campos insuficiente por favor de verificarlos');
       }
     } catch (error) {
       res.status(204).send({

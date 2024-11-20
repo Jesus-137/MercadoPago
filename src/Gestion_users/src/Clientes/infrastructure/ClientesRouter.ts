@@ -25,4 +25,4 @@ clientesRouter.put(
 clientesRouter.use(
   '/:uuid/publicaciones',
   publicacionesRouter
-)
+);

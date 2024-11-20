@@ -15,7 +15,8 @@ export class MysqlUsuariosRepository implements Repository {
             usuario.uuid,
             usuario.nombre,
             usuario.password,
-            usuario.telefono
+            usuario.telefono,
+            usuario.correo
           )
       );
     } catch (error) {
@@ -23,13 +24,13 @@ export class MysqlUsuariosRepository implements Repository {
     }
   }
   
-  async update(uuid: string, nombre: string, password: string, telefono: string): Promise<Usuarios | null> {
-    const sql = "UPDATE usuarios SET nombre=?, password=?, telefono=? WHERE uuid=?";
+  async update(uuid: string, nombre: string, password: string, telefono: string, correo: string): Promise<Usuarios | null> {
+    const sql = "UPDATE usuarios SET nombre=?, password=?, telefono=? WHERE uuid=?;";
     const params: any[] = [nombre, password, telefono, uuid];
     try {
       const [result]: any = await query(sql, params);
       console.log(result)
-      return new Usuarios(result.insertid, uuid, nombre, password, telefono);
+      return new Usuarios(result.insertid, uuid, nombre, password, telefono, correo);
     } catch (error) {
       console.error("Error updating:", error);
       return null;
@@ -45,7 +46,8 @@ export class MysqlUsuariosRepository implements Repository {
         data[0].uuid,
         data[0].nombre,
         data[0].password,
-        data[0].telefono
+        data[0].telefono,
+        data[0].correo
       )
     } catch (error) {
       return null;
@@ -68,14 +70,15 @@ export class MysqlUsuariosRepository implements Repository {
     uuid: string,
     nombre: string,
     password: string,
-    telefono: string
+    telefono: string,
+    correo: string
   ): Promise<Usuarios | null> {
-    const sql = "INSERT INTO Usuarios (uuid, nombre, password, telefono) VALUES (?, ?, ?, ?)";
-    const params: any[] = [uuid, nombre, password, telefono];
+    const sql = "INSERT INTO Usuarios (uuid, nombre, password, telefono, correo) VALUES (?, ?, ?, ?, ?)";
+    const params: any[] = [uuid, nombre, password, telefono, correo];
     try {
       const [result]: any = await query(sql, params);
       console.log(result)
-      return new Usuarios(result.insertid, uuid, nombre, password, telefono);
+      return new Usuarios(result.insertid, uuid, nombre, password, telefono, correo);
     } catch (error) {
       return null;
     }

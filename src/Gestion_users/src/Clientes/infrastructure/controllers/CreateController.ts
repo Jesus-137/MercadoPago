@@ -13,7 +13,10 @@ export class CreateController {
           data.nombre,
           data.tipo,
           data.telefono,
-          data.password
+          data.password,
+          data.generos,
+          data.upicacion,
+          data.tipo_evento
         );
         if (clientes){
           res.status(200).send(
@@ -30,7 +33,7 @@ export class CreateController {
           });
         }
       }else{
-        throw new Error('Campos insuficientes por farvor de verificarlos')
+        throw ('Campos insuficientes por farvor de verificarlos')
       }
     } catch (error) {
       //Code HTTP : 204 Sin contenido
