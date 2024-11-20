@@ -25,7 +25,7 @@ export class MysqlUsuariosRepository implements Repository {
   }
   
   async update(uuid: string, nombre: string, password: string, telefono: string, correo: string): Promise<Usuarios | null> {
-    const sql = "UPDATE usuarios SET nombre=?, password=?, telefono=? WHERE uuid=?";
+    const sql = "UPDATE usuarios SET nombre=?, password=?, telefono=? WHERE uuid=?;";
     const params: any[] = [nombre, password, telefono, uuid];
     try {
       const [result]: any = await query(sql, params);
