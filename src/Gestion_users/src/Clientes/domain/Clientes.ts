@@ -1,9 +1,11 @@
 export class Clientes {
   constructor(
     readonly uuid: string,
-    readonly nombre: string,
+    readonly id_lead: string,
     readonly tipo: string,
     readonly password: string,
-    readonly telefono: string
+    readonly genero_musical: string,
+    readonly tipo_evento: string,
+    readonly ubicacion: string
   ) {}
 }

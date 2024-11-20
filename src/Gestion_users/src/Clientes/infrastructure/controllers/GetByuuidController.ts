@@ -14,9 +14,10 @@ export class GetByuuidController {
           res.status(200).send(
             {
               id: clientes.uuid,
-              nombre: clientes.nombre,
-              telefono: clientes.telefono,
-              tipo: clientes.tipo
+              tipo: clientes.tipo,
+              tipo_evento: clientes.tipo_evento,
+              ubicacion: clientes.ubicacion,
+              generos: clientes.genero_musical
             }
           );
         else

@@ -8,29 +8,25 @@ export class CreateController {
   async run(req: Request, res: Response) {
     const data = req.body;
     try {
-      if (data.nombre!=''||data.tipo!=''||data.telefono!=''||data.password!=''){
+      if (data.id_lead!=''||data.tipo!=''||data.generos!=''||data.password!=''||data.ubicacion!=''||data.tipo_evento!=''){
         const clientes = await this.CreateUseCase.run(
-          data.nombre,
+          data.id_lead,
           data.tipo,
-          data.telefono,
           data.password,
           data.generos,
-          data.upicacion,
+          data.ubicacion,
           data.tipo_evento
         );
         if (clientes){
-          res.status(200).send(
-            {
+          res.status(200).send({
               id: clientes.uuid,
-              nombre: clientes.nombre,
               tipo: clientes.tipo,
-              telefono: clientes.telefono
+              tipo_evento: clientes.tipo_evento,
+              generos: clientes.genero_musical,
+              ubicacion: clientes.ubicacion
             });
         }else{
-          res.status(400).send({
-            status: "error",
-            msn: "Ocurrio algún problema",
-          });
+          throw('Ocurio un error desconocido')
         }
       }else{
         throw ('Campos insuficientes por farvor de verificarlos')

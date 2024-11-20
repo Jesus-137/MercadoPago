@@ -5,19 +5,19 @@ export interface Repository {
   delete(uuid: string): Promise <string | null>;
   update(
     uuid: string,
-    nombre: string,
     tipo: string,
-    telefono: string,
-    password: string
-  ): Promise <Clientes | null>
+    generos: string,
+    tipo_evento: string,
+    ubicacion: string
+  ): Promise <string | null>;
+  getAll(): Promise<Clientes[]|null>;
   create(
     uuid: string,
-    nombre: string,
+    id_lead: string,
     tipo: string,
-    telefono: string,
     password: string,
     generos: string,
-    upicacion: string,
+    ubicacion: string,
     tipo_evento: string
-  ): Promise <Clientes |  null>
+  ): Promise <Clientes |  null>;
 }

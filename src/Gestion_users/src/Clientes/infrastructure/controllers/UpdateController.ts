@@ -9,27 +9,21 @@ export class UpdateController {
     const data = req.body;
     const uuid = req.params.uuid
     try {
-      if (uuid!=''||data.nombre!=''||data.tipo!=''||data.password!=''||data.telefono!=''){
+      if (uuid!=''||data.generos!=''||data.tipo!=''||data.tipo_evento!=''||data.ubicacion!=''){
         const clientes = await this.UpdateUseCase.run(
           uuid,
-          data.nombre,
           data.tipo,
-          data.password,
-          data.telefono
+          data.generos,
+          data.tipo_evento,
+          data.ubicacion
         );
         if (clientes)
-          res.status(200).send(
-            {
-              id: clientes.uuid,
-              nombre: clientes.nombre,
-              tipo: clientes.tipo,
-              telefono: clientes.telefono
+          res.status(200).send({
+              status: 'actualizado',
+              data: clientes
             });
         else
-          res.status(400).send({
-            status: "error",
-            msn: "Ocurrio algún problema",
-          });
+          throw('Ocurio un error desconocido')
       }else{
         throw ('Campos insuficientes por farvor de verificarlos');
       }

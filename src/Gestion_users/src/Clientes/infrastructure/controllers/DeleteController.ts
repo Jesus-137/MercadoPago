@@ -18,10 +18,7 @@ export class DeleteController {
             data: cliente,
           });
         else
-          res.status(400).send({
-            status: "error",
-            msn: "Ocurrio algún problema",
-          });
+          throw('Ocurio un error desconocido')
       }else{
         throw ('No se encontro el usuario verificar el id')
       }

@@ -6,24 +6,22 @@ export class CreateUseCase {
   constructor(readonly movimientoRepo: Repository) {}
 
   async run(
-    nombre: string,
-    password: string,
+    id_lead: string,
     tipo: string,
-    phone: string,
+    password: string,
     generos: string,
-    upicacion: string,
+    ubicacion: string,
     tipo_evento: string
   ): Promise<Clientes | null> {
     try {
       const MyUUID = uuidv4()
       const result = await this.movimientoRepo.create(
         MyUUID,
-        nombre,
-        password,
+        id_lead,
         tipo,
-        phone,
+        password,
         generos,
-        upicacion,
+        ubicacion,
         tipo_evento
       );
       console.log(result);
