@@ -3,9 +3,9 @@ import { Tokens } from "../../domain/Tokens";
 import { Repository } from "../../domain/Repository";
 
 export class MySQL implements Repository{
-    async crear(uuid: string, token: string, habilitado: boolean): Promise<Tokens | null> {
+    async crear(uuid: string, token: string, habilitado: number): Promise<Tokens | null> {
         const sql = 'INSERT INTO tokens (uuid, token, habilitado) VALUES (?, ?, ?);';
-        const [params]: any = [uuid, token, habilitado];
+        const params: any[] = [uuid, token, habilitado];
         try {
             const [tokens]: any = await query(sql, params);
             return new Tokens(
@@ -23,9 +23,8 @@ export class MySQL implements Repository{
 
     async getAll(): Promise<Tokens[] | null> {
         const sql = 'SELECT * FROM tokens;';
-        const [params]: any = []
         try {
-            const [result]: any = query(sql, params);
+            const [result]: any = await query(sql, []);
             const tokens = Object.values(JSON.parse(JSON.stringify(result)));
             return tokens.map((token: any)=>(
                 new Tokens(
@@ -38,11 +37,12 @@ export class MySQL implements Repository{
                 )
             ));
         } catch (error) {
+            console.error(error);
             return null;
         }
     }
 
-    async update(habilitado: boolean, uuid: string): Promise<string | null> {
+    async update(habilitado: number, uuid: string): Promise<string | null> {
         const sql = "UPDATE tokens SET habilitado WHERE uuid=?;";
         const [params]: any = [habilitado, uuid];
         try {

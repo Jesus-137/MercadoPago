@@ -4,11 +4,11 @@ export interface Repository{
     crear(
         uuid: string,
         token: string,
-        habilitado: boolean
+        habilitado: number
     ): Promise<Tokens|null>
     getAll(): Promise<Tokens[]|null>
     update(
-        habilitado: boolean,
+        habilitado: number,
         uuid: string
     ): Promise<string|null>
 }

@@ -9,19 +9,15 @@ export class UpdateUseCase {
     generos: string,
     tipo_evento: string,
     ubicacion: string
-  ): Promise<string | null> {
-    try {
-      const result = await this.movimientoRepo.update(
-        uuid,
-        tipo,
-        generos,
-        tipo_evento,
-        ubicacion
-      );
-      console.log(result);
-      return result;
-    } catch (error) {
-      return null;
-    }
+  ): Promise<string> {
+    const result = await this.movimientoRepo.update(
+      uuid,
+      tipo,
+      generos,
+      tipo_evento,
+      ubicacion
+    );
+    console.log(result);
+    return result;
   }
 }

@@ -17,13 +17,13 @@ export class UpdateController {
           data.tipo_evento,
           data.ubicacion
         );
-        if (clientes)
+        if (clientes=='Se actualizo correctamente')
           res.status(200).send({
               status: 'actualizado',
               data: clientes
             });
         else
-          throw('Ocurio un error desconocido')
+          throw(clientes)
       }else{
         throw ('Campos insuficientes por farvor de verificarlos');
       }

@@ -1,10 +1,11 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { GetAllUseCase } from "../../aplication/GetAllUseCase";
 
 export class GetAllController{
     constructor(private getAllUseCase: GetAllUseCase){}
 
-    async run (res: Response){
+    async run (req: Request, res: Response){
+        console.log(req.headers)
         try {
             const tokens = await this.getAllUseCase.run();
             if(tokens){
@@ -12,7 +13,9 @@ export class GetAllController{
                     data: tokens.map((token: any)=>({
                         id: token.uuid,
                         token: token.token,
-                        habilitado: token.habilitado
+                        habilitado: token.habilitado,
+                        creacion: token.creacion,
+                        actualizacion: token.actualizacion
                     }))
                 })
             }else{

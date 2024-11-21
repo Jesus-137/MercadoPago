@@ -8,7 +8,7 @@ export class UpdateUseCase {
     uuid:string,
     id_usuario: number,
     busqueda: string
-  ): Promise<Historial | null> {
+  ): Promise<Historial | string> {
     try {
       const cliente = await this.Repo.update(
         uuid,
@@ -17,7 +17,7 @@ export class UpdateUseCase {
       );
       return cliente;
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

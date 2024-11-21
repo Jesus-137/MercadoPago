@@ -10,7 +10,7 @@ export class GetByuuidController {
     try {
       if (uuid!=''){
         const clientes = await this.getByuuidUseCase.run(uuid);
-        if (clientes)
+        if (typeof(clientes)=='object')
           res.status(200).send(
             {
               id: clientes.uuid,
@@ -21,16 +21,13 @@ export class GetByuuidController {
             }
           );
         else
-          res.status(400).send({
-            status: "error",
-            msn: "Ocurrio algún problema",
-          });
+          throw(clientes)
       }else{
         throw ('No se encontro el usuario verificar el id');
       }
     } catch (error) {
       //Code HTTP : 204 Sin contenido
-      res.status(204).send({
+      res.status(400).send({
         status: "error",
         data: "Ocurrio un error",
         msn: error,

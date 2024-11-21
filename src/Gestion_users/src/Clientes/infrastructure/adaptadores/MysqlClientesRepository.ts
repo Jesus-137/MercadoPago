@@ -11,79 +11,109 @@ export class MysqlClientesRepository implements Repository {
     generos: string,
     ubicacion: string,
     tipo_evento: string
-  ): Promise<Clientes | null> {
+  ): Promise<Clientes | string> {
     const sql = "INSERT INTO clientes (uuid, id_lead, password, genero_musical, ubicacion, tipo_evento, tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
     const params: any[] = [uuid, id_lead, password, generos, ubicacion, tipo_evento, tipo];
     try {
-      const [result]: any = await query(sql, params);
-      console.log(result)
-      return new Clientes(uuid, id_lead, tipo, password, generos, tipo_evento, ubicacion);
+      const resultado = await query(sql, params);
+      const data = JSON.parse(JSON.stringify(resultado))
+      if(data.status==200){
+          return new Clientes(
+            uuid,
+            id_lead,
+            tipo,
+            password,
+            generos,
+            tipo_evento,
+            ubicacion
+          )
+      }else{
+          throw(data.message)
+      }
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 
-  async getAll(): Promise<Clientes[] | null> {
+  async getAll(): Promise<Clientes[] | string> {
     const sql = 'SELECT * FROM clientes;';
     try {
-      const [resultado]: any = await query(sql, []);
-      const [clientes]: any = Object.values(JSON.parse(JSON.stringify(resultado)));
-      return clientes.map((cliente: any)=>(
-        new Clientes(
-          cliente.uuid,
-          cliente.id_lead,
-          cliente.tipo,
-          cliente.password,
-          cliente.genero_musical,
-          cliente.tipo_evento,
-          cliente.ubicacion
-        )
-      ));
+      const resultado = await query(sql, []);
+      const data = JSON.parse(JSON.stringify(resultado))
+      if(data.status==200){
+        const [clientes]: any = Object.values(JSON.parse(JSON.stringify(data.data)));
+        return clientes.map((cliente: any)=>(
+          new Clientes(
+            cliente.uuid,
+            cliente.id_lead,
+            cliente.tipo,
+            cliente.password,
+            cliente.genero_musical,
+            cliente.tipo_evento,
+            cliente.ubicacion
+          )
+        ));
+      }else{
+        throw(data.message)
+      }
     } catch (error) {
-      return null
+      return String(error)
     }
   }
 
-  async delete(uuid: String): Promise<string | null> {
+  async delete(uuid: String): Promise<string> {
     const sql = "DELETE FROM clientes where uuid=?";
     const params: any[] = [uuid];
     try {
-      const [result]: any = await query(sql, params);
-      console.log(result);
-      return 'Se eliminó correctamente'
+      const result = await query(sql, params);
+      const data = JSON.parse(JSON.stringify(result))
+      if(data.status==200){
+        return 'Se elimino corectamente'
+      }else{
+        throw(data.message)
+      }
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 
-  async update(uuid: string, tipo: string, generos: string, tipo_evento: string, ubicacion: string): Promise<string | null> {
+  async update(uuid: string, tipo: string, generos: string, tipo_evento: string, ubicacion: string): Promise<string> {
     const sql = "UPDATE clientes SET tipo=?, genero_musical=?, tipo_evento=?, ubicacion=? WHERE uuid=?";
     const params: any[] = [tipo, generos, tipo_evento, ubicacion, uuid];
     try {
-      const [result]: any = await query(sql, params);
-      console.log(result)
-      return 'Se actualizo corectamente'
+      const result = await query(sql, params);
+      const data = JSON.parse(JSON.stringify(result))
+      if(data.status==200){
+        return 'Se actualizo correctamente'
+      }else{
+        throw(data.message)
+      }
     } catch (error) {
-      console.error("Error updating:", error);
-      return null;
+      return String(error)
     }
   }
 
-  async getByuuid(uuid: string): Promise<Clientes | null> {
+  async getByuuid(uuid: string): Promise<Clientes | string> {
     const sql = "SELECT * FROM clientes WHERE uuid=?;";
     try {
-      const [clientes]: any = await query(sql, [uuid]);
-      return new Clientes(
-        clientes[0].uuid,
-        clientes[0].id_lead,
-        clientes[0].tipo,
-        clientes[0].password,
-        clientes[0].genero_musical,
-        clientes[0].tipo_evento,
-        clientes[0].ubicacion
-      );
+      const [resultado]: any = await query(sql, [uuid]);
+      const data = JSON.parse(JSON.stringify(resultado));
+      if(data.status==200){
+        const [clientes]: any = data.data;
+        return new Clientes(
+          clientes[0].uuid,
+          clientes[0].id_lead,
+          clientes[0].tipo,
+          clientes[0].password,
+          clientes[0].genero_musical,
+          clientes[0].tipo_evento,
+          clientes[0].ubicacion
+        );
+      }else{
+        throw(data.message)
+      }
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

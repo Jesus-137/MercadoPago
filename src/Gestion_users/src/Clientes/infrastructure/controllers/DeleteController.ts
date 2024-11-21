@@ -11,14 +11,14 @@ export class DeleteController {
       if(uuid!=''){
         const cliente = await this.DeleteUseCase.run(uuid);
 
-        if (cliente)
+        if (cliente=='Se elimino corectamente')
           //Code HTTP : 200 -> Consulta exitosa
           res.status(200).send({
             status: "success",
             data: cliente,
           });
         else
-          throw('Ocurio un error desconocido')
+          throw(cliente)
       }else{
         throw ('No se encontro el usuario verificar el id')
       }

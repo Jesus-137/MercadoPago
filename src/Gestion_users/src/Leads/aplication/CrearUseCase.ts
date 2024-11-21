@@ -10,7 +10,7 @@ export class CrearUseCase{
         nombre: string,
         telefono: string,
         correo: string
-    ): Promise<LeadsUser|null>{
+    ): Promise<LeadsUser|string>{
         try {
             const uuid = uuidv4();
             const leads = await this.repo.crear(
@@ -22,7 +22,7 @@ export class CrearUseCase{
             );
             return leads;
         } catch (error) {
-            return null;
+            return String(error);
         }
     }
 }

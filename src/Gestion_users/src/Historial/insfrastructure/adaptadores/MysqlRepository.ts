@@ -3,22 +3,27 @@ import { Historial } from "../../domain/Historial";
 import { Repository } from "../../domain/Repository";
 
 export class MysqlRepository implements Repository {
-  async getAll(): Promise<Historial[] | null> {
+  async getAll(): Promise<Historial[] | string> {
     const sql = "SELECT * FROM historial";
     try {
-      const [data]: any = await query(sql, []);
-      const clientes = Object.values(JSON.parse(JSON.stringify(data)));
-      return clientes.map(
-        (cliente: any) =>
-          new Historial(
-            cliente.uuid,
-            cliente.fecha_busqueda,
-            cliente.id_usuario,
-            cliente.busqueda
-          )
-      );
+      const resultado = await query(sql, []);
+      const data = JSON.parse(JSON.stringify(resultado));
+      if(data.status==200){
+        const clientes = Object.values(JSON.parse(JSON.stringify(data.data)));
+        return clientes.map(
+          (cliente: any) =>
+            new Historial(
+              cliente.uuid,
+              cliente.fecha_busqueda,
+              cliente.id_usuario,
+              cliente.busqueda
+            )
+        );
+      }else{
+        throw(data.message);
+      }
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 
@@ -26,15 +31,19 @@ export class MysqlRepository implements Repository {
     uuid: string,
     id_usuario: number,
     busqueda: string
-  ): Promise<Historial | null> {
+  ): Promise<Historial | string> {
     const sql = "UPDATE historial SET id_usuario=?, busqueda=? WHERE uuid=?";
     const params: any[] = [id_usuario, busqueda, uuid];
     try {
-      const [result]: any = await query(sql, params);
-      console.log(result)
-      return new Historial(uuid, null, id_usuario, busqueda);
+      const result = await query(sql, params);
+      const data = JSON.parse(JSON.stringify(result));
+      if(data.status==200){
+        return new Historial(uuid, null, id_usuario, busqueda);
+      }else{
+        throw(data.message)
+      }
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

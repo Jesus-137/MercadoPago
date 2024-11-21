@@ -16,7 +16,7 @@ export class CrearController{
             const newToken = await jwt.sign(playload, secretKey, {expiresIn: '1h'});
             const token = await this.crearUseCase.run(
                 newToken,
-                true
+                1
             );
             if(token){
                 res.status(200).send({

@@ -23,9 +23,16 @@ export async function query(sql: string, params: any[]) {
     signale.success("Conexión exitosa a la BD");
     const result = await conn.execute(sql, params);
     conn.release();
-    return result;
-  } catch (error) {
-    signale.error(error);
-    return null;
+    const data = {status: 200, data: result}
+    return data;
+  } catch (error: any) {
+    // console.log(error);
+    if (error.code === 'ER_DUP_ENTRY') {
+      // console.error('Error: El username ya existe en la base de datos.');
+      return { message: error.sqlMessage, status: 400 };
+    } else {
+      // console.error('Error inesperado:', error);
+      return { message: 'Error interno del servidor.', status: 500 };
+    }
   }
 }

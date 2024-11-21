@@ -17,7 +17,7 @@ export class UpdateController {
           id_usuario,
           data.busqueda
         );
-        if (cliente){
+        if (typeof(cliente)=='object'){
           //Code HTTP : 201 -> Creado
           res.status(201).send({
             status: "success",
@@ -30,7 +30,7 @@ export class UpdateController {
           console.log('Registro exitoso')
         }
         else
-          throw ("NO fue posible agregar el registro")
+          throw (cliente)
       }else{
         throw ('Campos insuficientes por favor de verificar');
       }

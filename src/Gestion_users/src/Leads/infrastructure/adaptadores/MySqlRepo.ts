@@ -26,22 +26,27 @@ export class MySqlRepo implements Repository{
         nombre: string,
         telefono: string,
         correo: string
-    ): Promise<LeadsUser | null> {
-        const sql = 'INSERT INTO leads (uuid, username, nombre, telefono, correo) values (?,?,?,?,?);'
-        const [params]: any = [uuid, username, nombre, telefono, correo]
+    ): Promise<LeadsUser | string> {
+        const sql = 'INSERT INTO leads (uuid, username, nombre, telefono, correo) VALUES (?,?,?,?,?);';
+        const params: any[] = [uuid, username, nombre, telefono, correo]
+        console.log(params[0])
         try {
-            const [resultado]: any = await query(sql, params);
-
-            return new LeadsUser(
-                resultado.insertid,
-                uuid,
-                username,
-                nombre,
-                telefono,
-                correo
-            )
+            const resultado = await query(sql, params);
+            const data = JSON.parse(JSON.stringify(resultado))
+            if(data.status==200){
+                return new LeadsUser(
+                    data.data.insertid,
+                    uuid,
+                    username,
+                    nombre,
+                    telefono,
+                    correo
+                )
+            }else{
+                throw(data.message)
+            }
         } catch (error) {
-            return null
+            return String(error);
         }
     }
     async crearToken(

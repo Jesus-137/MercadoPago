@@ -7,7 +7,7 @@ export class CrearUseCase{
 
     async run (
         token: string,
-        habilitado: boolean
+        habilitado: number
     ): Promise<Tokens|null>{
         try {
             const UUID = uuidv4()

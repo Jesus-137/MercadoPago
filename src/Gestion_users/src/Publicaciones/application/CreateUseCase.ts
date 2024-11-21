@@ -9,7 +9,7 @@ export class CreateUseCase {
     descripcion: string,
     contenido: string,
     id_cliente: number
-  ): Promise<Publicaciones | null> {
+  ): Promise<Publicaciones | string> {
     try {
       const MyUUID = uuidv4()
       const cliente = await this.Repo.create(
@@ -20,7 +20,7 @@ export class CreateUseCase {
       );
       return cliente;
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

@@ -17,7 +17,7 @@ export class TwilioRepository implements Repository{
             console.log(accountSid, authToken);
             const client = twilio(accountSid, authToken);
             
-            const code =Math.floor(1000 + Math.random() * 9000);
+            const code = Math.floor(1000 + Math.random() * 9000);
             console.log(code)
             
             const whatsapp = await client.messages.create({
@@ -26,11 +26,11 @@ export class TwilioRepository implements Repository{
                 contentVariables: `{"1":"${code}"}`,
                 to: `whatsapp:+521${telefono}`
             })
-            .then(message => {
-                const sql = 'INSERT INTO mensajes (uuid, id_user, telefono, codigo) VALUES (?, ?, ?, ?);';
+            .then(async (message) => {
+                const sql = 'INSERT INTO Whats (uuid, id_user, telefono, codigo) VALUES (?, ?, ?, ?);';
                 const params: any[] = [uuid, uuid_user, telefono, code]
                 try {
-                    const [whatsapp]: any = query(sql, params);
+                    const [whatsapp]: any = await query(sql, params);
                     console.log(whatsapp.insertid);
                     return new WhatsApp(uuid, uuid_user, telefono, code)
                 } catch (error) {

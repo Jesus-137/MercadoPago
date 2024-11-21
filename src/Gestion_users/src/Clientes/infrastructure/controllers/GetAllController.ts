@@ -10,7 +10,7 @@ export class GetAllController {
 
     try {
       const usuarios = await this.getAllUseCase.run(); // Obtener todos los usuarios desde el caso de uso
-      if (usuarios) {
+      if (typeof(usuarios)=='object') {
         let usuariosFiltrados = usuarios;
 
         // Filtrar usuarios por género musical, tipo de evento y ubicación
@@ -53,7 +53,7 @@ export class GetAllController {
           data,
         });
       } else {
-        throw "Ocurrió un error desconocido.";
+        throw (usuarios);
       }
     } catch (error) {
       return res.status(400).send({

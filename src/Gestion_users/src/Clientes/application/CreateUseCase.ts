@@ -12,7 +12,7 @@ export class CreateUseCase {
     generos: string,
     ubicacion: string,
     tipo_evento: string
-  ): Promise<Clientes | null> {
+  ): Promise<Clientes | string> {
     try {
       const MyUUID = uuidv4()
       const result = await this.movimientoRepo.create(
@@ -27,7 +27,7 @@ export class CreateUseCase {
       console.log(result);
       return result;
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

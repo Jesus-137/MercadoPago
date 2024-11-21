@@ -6,8 +6,8 @@ export interface Repository{
         username: string,
         nombre: string,
         telefono: string,
-        sendBy: string
-    ): Promise<LeadsUser|null>
+        correo: string
+    ): Promise<LeadsUser|string>;
     verificar(
         token: string,
         tipo: string

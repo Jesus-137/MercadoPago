@@ -17,7 +17,7 @@ export class CreateController {
           data.ubicacion,
           data.tipo_evento
         );
-        if (clientes){
+        if (typeof(clientes)=='object'){
           res.status(200).send({
               id: clientes.uuid,
               tipo: clientes.tipo,
@@ -26,7 +26,7 @@ export class CreateController {
               ubicacion: clientes.ubicacion
             });
         }else{
-          throw('Ocurio un error desconocido')
+          throw(clientes)
         }
       }else{
         throw ('Campos insuficientes por farvor de verificarlos')

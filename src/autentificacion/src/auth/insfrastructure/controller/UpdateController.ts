@@ -8,7 +8,7 @@ export class UpdateController{
         const uuid = req.params.uuid;
         try {
             const token = await this.updateUseCase.run(
-                false,
+                0,
                 uuid
             );
             if(token){

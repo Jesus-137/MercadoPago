@@ -3,7 +3,7 @@ export class Tokens{
         readonly id: number,
         readonly uuid: string,
         readonly token: string,
-        readonly habilitado: boolean,
+        readonly habilitado: number,
         readonly creacion: string | null,
         readonly actualizacion: string | null
     ){}

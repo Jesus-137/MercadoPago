@@ -14,7 +14,7 @@ export class GetAllClientesController {
     try {
       const clientes = await this.getAllProductUseCase.run();
 
-      if (clientes) {
+      if (typeof(clientes)=='object') {
         // Filtrar clientes según los filtros en la URL
         let clientesFiltrados = clientes;
 
@@ -52,7 +52,7 @@ export class GetAllClientesController {
 
         res.status(200).send(response);
       } else {
-        throw ('Ocurio un error desconocido')
+        throw (clientes)
       }
     } catch (error) {
       res.status(204).send({
