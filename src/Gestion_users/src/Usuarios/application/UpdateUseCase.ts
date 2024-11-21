@@ -10,7 +10,7 @@ export class UpdateClientesUseCase {
     password: string,
     telefono: string,
     correo: string
-  ): Promise<Usuarios | null> {
+  ): Promise<Usuarios | string> {
     try {
       const result = await this.movimientoRepo.update(
         uuid,
@@ -22,7 +22,7 @@ export class UpdateClientesUseCase {
       console.log(result);
       return result;
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

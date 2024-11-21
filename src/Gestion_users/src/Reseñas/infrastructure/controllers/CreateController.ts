@@ -19,7 +19,7 @@ export class CreateClienteController {
           data.comentario,
           estrellas
         );
-        if (cliente){
+        if (typeof(cliente)=='object'){
           res.status(201).send({
             status: "success",
             data: {
@@ -31,7 +31,7 @@ export class CreateClienteController {
           console.log('Registro exitoso')
         }
         else
-          throw ("NO fue posible agregar el registro")
+          throw (cliente)
       }else{
         throw ('Campos insuficientes por favor de verificarlos');
       }

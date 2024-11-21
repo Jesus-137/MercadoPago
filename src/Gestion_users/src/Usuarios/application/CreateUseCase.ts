@@ -10,7 +10,7 @@ export class CreateClientesUseCase {
     password: string,
     telefono: string,
     correo: string
-  ): Promise<Usuarios | null> {
+  ): Promise<Usuarios | string> {
     try {
       const MyUUID = uuidv4();
       const cliente = await this.movimientoRepo.create(
@@ -22,7 +22,7 @@ export class CreateClientesUseCase {
       );
       return cliente;
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

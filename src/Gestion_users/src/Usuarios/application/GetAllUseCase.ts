@@ -4,12 +4,12 @@ import { Repository } from "../domain/Repository";
 export class GetAllUseCase{
     constructor(readonly repo: Repository){}
     
-    async run(): Promise<Usuarios[]|null>{
+    async run(): Promise<Usuarios[]|string>{
         try {
             const usuarios = await this.repo.getAll();
             return usuarios;
         } catch (error) {
-            return null;            
+            return String(error);            
         }
     }
 }

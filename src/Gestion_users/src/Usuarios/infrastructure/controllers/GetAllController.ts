@@ -10,7 +10,7 @@ export class GetAllController {
 
     try {
       const usuarios = await this.getAllUseCase.run();
-      if (usuarios) {
+      if (typeof(usuarios)!='string') {
         let usuariosFiltrados = usuarios;
 
         // Filtrar usuarios basados en otros filtros en query (excluyendo 'fields')
@@ -51,7 +51,7 @@ export class GetAllController {
           data
         });
       } else {
-        throw ('Ocurrió un error desconocido');
+        throw (usuarios);
       }
     } catch (error) {
       return res.status(400).send({

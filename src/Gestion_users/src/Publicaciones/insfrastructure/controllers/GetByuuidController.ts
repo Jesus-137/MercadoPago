@@ -10,7 +10,7 @@ export class GetByuuidController {
     try {
       if(uuid!=''){
         const cliente = await this.getByIdClienteUseCase.run(uuid);
-        if (cliente)
+        if (typeof(cliente)=='object')
           res.status(200).send({
             status: "success",
             data: {
@@ -20,10 +20,7 @@ export class GetByuuidController {
             },
           });
         else
-          res.status(400).send({
-            status: "error",
-            msn: "Ocurrio algún problema",
-          });
+          throw(cliente)
       }else{
         throw ('Campos insuficientes por favor de verificarlos');
       }

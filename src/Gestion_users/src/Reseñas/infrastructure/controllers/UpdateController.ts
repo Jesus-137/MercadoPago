@@ -23,7 +23,7 @@ export class UpdateController {
           estrellas
         );
 
-        if (cliente) {
+        if (typeof(cliente)=='object') {
           return res.status(201).send({
             status: 'success',
             data: {
@@ -33,10 +33,7 @@ export class UpdateController {
             }
           });
         } else {
-          return res.status(204).send({
-            status: 'error',
-            data: 'No fue posible actualizar el registro'
-          });
+          throw(cliente)
         }
       }else{
         throw ('Campos insuficientes por favor de verificarlos');

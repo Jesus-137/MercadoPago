@@ -9,16 +9,20 @@ export class MysqlReseñasRepository implements Repository {
     id_publicacion: number,
     comentario: string,
     estrellas: number
-  ): Promise<Reseñas | null> {
+  ): Promise<Reseñas | string> {
     const sql = "UPDATE resenas SET id_usuario=?, id_publicacion=?, comentario=?, estrellas=? WHERE uuid=?";
     const params: any[] = [id_usuario, id_publicacion, comentario, estrellas, uuid];
     try {
-      const [result]: any = await query(sql, params);
+      const result = await query(sql, params);
       console.log(result)
-      return new Reseñas(uuid, id_usuario, id_publicacion, comentario, estrellas);
+      const data = JSON.parse(JSON.stringify(result));
+      if(data.status==200){
+        return new Reseñas(uuid, id_usuario, id_publicacion, comentario, estrellas);
+      }else{
+        throw(data.message)
+      }
     } catch (error) {
-      console.error("Error updating cliente:", error);
-      return null;
+      return String(error);
     }
   }
 
@@ -28,16 +32,21 @@ export class MysqlReseñasRepository implements Repository {
     id_publicacion: number,
     comentario: string,
     estrellas: number
-  ): Promise<Reseñas | null> {
+  ): Promise<Reseñas | string> {
     const sql =
 "INSERT INTO resenas (uuid, id_usuario, id_publicacion, comentario, estrellas) VALUES (?, ?, ?, ?, ?)";
     const params: any[] = [uuid, id_usuario, id_publicacion, comentario, estrellas];
     try {
-      const [result]: any = await query(sql, params);
+      const result = await query(sql, params);
       console.log(result)
-      return new Reseñas(uuid, id_usuario, id_publicacion, comentario, estrellas);
+      const data = JSON.parse(JSON.stringify(result))
+      if(data.status==200){
+        return new Reseñas(uuid, id_usuario, id_publicacion, comentario, estrellas);
+      }else{
+        throw(data.message)
+      }
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

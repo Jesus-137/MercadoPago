@@ -10,7 +10,7 @@ export class CreateUseCase {
     id_publicacion: number,
     comentario: string,
     estrellas: number
-  ): Promise<Reseñas | null> {
+  ): Promise<Reseñas | string> {
     try {
       const MyUUID = uuidv4();
       const cliente = await this.movimientoRepo.create(
@@ -22,7 +22,7 @@ export class CreateUseCase {
       );
       return cliente;
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

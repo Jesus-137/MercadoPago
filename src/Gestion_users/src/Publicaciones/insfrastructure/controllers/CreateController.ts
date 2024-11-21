@@ -16,7 +16,7 @@ export class CreateController {
           data.contenido,
           id_cliente
         );
-        if (cliente){
+        if (typeof(cliente)=='object'){
           //Code HTTP : 201 -> Creado
           res.status(201).send({
             status: "success",
@@ -29,7 +29,7 @@ export class CreateController {
           console.log('Registro exitoso')
         }
         else
-          throw ("NO fue posible agregar el registro");
+          throw (cliente);
       }else{
         throw ('Campos insuficiente por favor de verificarlos');
       }

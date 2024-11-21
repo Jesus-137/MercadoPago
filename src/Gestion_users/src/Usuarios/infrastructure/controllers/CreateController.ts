@@ -17,7 +17,7 @@ export class CreateClienteController {
           data.telefono,
           data.correo
         );
-        if (cliente){
+        if (typeof(cliente)=='object'){
           //Code HTTP : 201 -> Creado
           res.status(201).send({
             status: "success",
@@ -32,7 +32,7 @@ export class CreateClienteController {
           produceMessage('notificacion', `{"id": "${cliente.uuid}", "sendBy": "${data.sendBy}", "telefono": "${cliente.telefono}", "correo": "${cliente.correo}"}`)
         }
         else
-          throw("NO fue posible agregar el registro")
+          throw(cliente)
       }else{
         throw ('Campos insuficientes por favor de verificarlos');
       }

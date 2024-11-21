@@ -11,23 +11,19 @@ export class DeleteController {
       if (uuid!=''){
         const cliente = await this.DeleteUseCase.run(uuid);
 
-        if (cliente != '0')
+        if (cliente == 'Eliminado')
           //Code HTTP : 200 -> Consulta exitosa
           res.status(200).send({
             status: "success",
             data: 'Se elmino correctamente',
           });
         else
-          res.status(400).send({
-            status: "error",
-            msn: "Ocurrio algún problema",
-          });
+          throw(cliente)
       }else{
         throw ('No se encontro el usuario verifique el id')
       }
     } catch (error) {
-      //Code HTTP : 204 Sin contenido
-      res.status(204).send({
+      res.status(400).send({
         status: "error",
         data: "Ocurrio un error",
         msn: error,

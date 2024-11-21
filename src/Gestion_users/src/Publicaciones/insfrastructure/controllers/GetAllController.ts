@@ -8,7 +8,7 @@ export class GetAllClientesController {
   async run(req: Request, res: Response) {
     try {
       const clientes = await this.getAllProductUseCase.run();
-      if (clientes)
+      if (typeof(clientes)!='string')
         res.status(200).send(clientes.map((cliente: any) => {
             return {
               id: cliente.uuid,
@@ -18,7 +18,7 @@ export class GetAllClientesController {
           }),
         );
       else
-        throw ("Ocurrio algún problema desconocido")
+        throw (clientes)
     } catch (error) {
       //Code HTTP : 204 Sin contenido
       res.status(204).send({

@@ -10,7 +10,7 @@ export class UpdateUseCase {
     id_publicacion: number,
     comentario: string,
     estrellas: number
-  ): Promise<Reseñas | null> {
+  ): Promise<Reseñas | string> {
     try {
       const result = await this.movimientoRepo.update(
         uuid,
@@ -22,7 +22,7 @@ export class UpdateUseCase {
       console.log(result);
       return result;
     } catch (error) {
-      return null;
+      return String(error);
     }
   }
 }

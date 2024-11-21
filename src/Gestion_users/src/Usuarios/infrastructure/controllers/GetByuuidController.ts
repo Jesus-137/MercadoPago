@@ -14,7 +14,7 @@ export class GetAllClientesController {
       if (uuid!=''){
         const clientes = await this.getAllProductUseCase.run(uuid);
 
-        if (clientes) {
+        if (typeof(clientes)!='string') {
           const cliente = JSON.parse(JSON.stringify(clientes))
           // Objeto para almacenar solo los campos solicitados
           let clientesFiltrados: any = {};
@@ -40,7 +40,7 @@ export class GetAllClientesController {
             data: clientesFiltrados
           });
         } else {
-          throw ("Ocurrió algún problema");
+          throw (clientes);
         }
       }
     } catch (error) {

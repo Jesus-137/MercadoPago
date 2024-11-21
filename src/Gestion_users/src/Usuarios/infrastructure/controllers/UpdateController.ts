@@ -20,7 +20,7 @@ export class UpdateController {
           data.correo
         );
 
-        if (cliente) {
+        if (typeof(cliente)=='object') {
           res.status(201).send({
             status: 'success',
             data: {
@@ -32,7 +32,7 @@ export class UpdateController {
             }
           });
         } else {
-          throw ('No fue posible actualizar el registro');
+          throw (cliente);
         }
       }else{
         throw ('Campos insufisientes por favor de verificarlos')

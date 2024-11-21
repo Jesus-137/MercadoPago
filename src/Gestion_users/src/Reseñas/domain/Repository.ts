@@ -7,12 +7,12 @@ export interface Repository {
     id_publicacion: number,
     comentario: string,
     estrellas: number
-  ): Promise<Reseñas | null>;
+  ): Promise<Reseñas | string>;
   update(
     uuid: string,
     id_usuario: number,
     id_publicacion: number,
     comentario: string,
     estrellas: number
-  ): Promise<Reseñas|null>;
+  ): Promise<Reseñas|string>;
 }
