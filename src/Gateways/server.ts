@@ -1,37 +1,28 @@
-import express, { Request, Response } from 'express';
-import { HttpServiceAdapter } from './src/infrastructure/adaptadores/http';
-import { ExecuteUseCase } from './src/aplication/ExecuteUseCase';
+import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 const PORT = 3006;
 
-app.use(express.json());
+// Configurar rutas para microservicios
+app.use(
+  '/service1',
+  createProxyMiddleware({
+    target: 'http://localhost:3005', // URL del microservicio 1
+    changeOrigin: true, // Cambiar el encabezado Host al del servidor objetivo
+    pathRewrite: { '^/service1': '/tokens' }, // Reescribir el path eliminando "/service1"
+  })
+);
 
-// Configurar adaptadores para microservicios
-const service1Adapter = new HttpServiceAdapter('http://localhost:3005');
-const service2Adapter = new HttpServiceAdapter('http://localhost:3002');
+app.use(
+  '/service2',
+  createProxyMiddleware({
+    target: 'http://localhost:3002', // URL del microservicio 2
+    changeOrigin: true,
+    pathRewrite: { '^/service2': '/whatsapp' },
+  })
+);
 
-// Crear casos de uso
-const service1Handler = new ExecuteUseCase(service1Adapter);
-const service2Handler = new ExecuteUseCase(service2Adapter);
-
-// Rutas
-app.all('/tokens/*', async (req: Request, res: Response) => {
-  try {
-    const data = await service1Handler.handleRequest(req);
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error});
-  }
+app.listen(PORT, () => {
+  console.log(`API Gateway running on ${PORT}`);
 });
-
-app.all('/whatsapp/*', async (req, res) => {
-  try {
-    const data = await service2Handler.handleRequest(req);
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error});
-  }
-});
-
-app.listen(PORT, () => console.log(`API Gateway running on ${PORT}`));

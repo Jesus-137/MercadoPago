@@ -18,9 +18,9 @@ export class MandarMensajeController {
     const data = req.body;
     const uuid = req.params.uuid;
     try {
-      const whatsapp = await this.mandarMensajeUseCase.run(uuid, data.telefono);
       const leads_id = new Leads_Id()
-      if (leads_id.get(uuid)!=null){
+      if (await leads_id.get(uuid)!=null){
+        const whatsapp = await this.mandarMensajeUseCase.run(uuid, data.telefono);
         if (whatsapp) {
           res.status(201).send({
             status: 'creado',
