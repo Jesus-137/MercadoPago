@@ -9,7 +9,8 @@ export class MysqlUsuariosRepository implements Repository {
       const result = await query(sql, []);
       const data = JSON.parse(JSON.stringify(result))
       if(data.status==200){
-        const usuarios = Object.values(JSON.parse(JSON.stringify(data.data)))
+        const usuarios = Object.values(JSON.parse(JSON.stringify(data.data[0])))
+        console.log(usuarios)
         return usuarios.map(
           (usuario: any)=>
             new Usuarios(

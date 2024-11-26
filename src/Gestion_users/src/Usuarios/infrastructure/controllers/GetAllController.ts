@@ -10,6 +10,7 @@ export class GetAllController {
 
     try {
       const usuarios = await this.getAllUseCase.run();
+      console.log(usuarios)
       if (typeof(usuarios)!='string') {
         let usuariosFiltrados = usuarios;
 
@@ -41,7 +42,6 @@ export class GetAllController {
             return {
               id: usuario.uuid,
               nombre: usuario.nombre,
-              telefono: usuario.telefono
             };
           }
         });
