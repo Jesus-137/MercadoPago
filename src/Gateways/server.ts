@@ -5,18 +5,9 @@ import { extraerInformacion } from "./ExtraerInfo";
 
 dotenv.config();
 
-const caractristicas =  [
-  /^(?=.*[A-Z])(?=.*[#*\-_!¡])[A-Za-z0-9#*\-_!¡]{8,}$/,//password
-  /^[^0-9]*$/,//nombre
-  /^\d{10}$/,//telefono
-  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, //correo
-
-];
-
 const app = express();
 app.use(express.json());
 
-// Middleware para habilitar CORS
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
@@ -24,21 +15,16 @@ app.use((req, res, next) => {
     next();
 });
 
-// Middleware para logging
 app.use((req: Request, res: Response, next: NextFunction) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
 
-// Rutas hacia microservicios
 const routes = {
     clientes: process.env.CLIENTES_SERVICE_URL || "http://localhost:3000/api/v1/clientes",
     usuarios: process.env.USUARIOS_SERVICE_URL || "http://localhost:3000/api/v1/usuarios",
 };
 
-// Endpoints del Gateway
-
-// Ejemplo de ruta para el microservicio de clientes con filtros
 app.post("/buscar", async (req: Request, res: Response) => {
     try {
         const { texto } = req.body;
@@ -47,12 +33,10 @@ app.post("/buscar", async (req: Request, res: Response) => {
             return res.status(400).send({ error: "El parámetro 'texto' es obligatorio." });
         }
 
-        // Extraer información del texto
         const filtros = extraerInformacion(texto as string);
 
-        // Hacer la solicitud al microservicio de clientes con los filtros extraídos
         const respuesta = await axios.get(routes.clientes, {
-            params: filtros, // Pasar los filtros como query params
+            params: filtros,
         });
 
         res.status(respuesta.status).send(respuesta.data);
@@ -82,11 +66,11 @@ app.get('/clientes', async (req: Request, res:Response)=>{
       params: params,
     })
     res.status(respuesta.status).send(respuesta.data)
-  } catch (error) {
-    res.status(400).send({
-      status: "Error",
-      msn: error
-    })
+  } catch (error: any) {
+    res.status(error.response?.status || 500).send({
+      error: "Error procesando la solicitud en el Gateway.",
+      detalles: error.response?.data || error.message,
+  });
   }
 })
 
@@ -106,28 +90,26 @@ app.get('/usuarios', async (req: Request, res:Response)=>{
       params: params,
     })
     res.status(respuesta.status).send(respuesta.data)
-  } catch (error) {
-    res.status(400).send({
-      status: "Error",
-      msn: error
-    })
+  } catch (error:any) {
+    res.status(error.response?.status || 500).send({
+      error: "Error procesando la solicitud en el Gateway.",
+      detalles: error.response?.data || error.message,
+    });
   }
 })
 
 app.post('/usuarios',async (req: Request, res:Response)=>{
+  const caractristicas =  [
+    /^(?=.*[A-Z])(?=.*[#*\-_!¡])[A-Za-z0-9#*\-_!¡]{8,}$/,//password
+    /^[^0-9]*$/,//nombre
+    /^\d{10}$/,//telefono
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, //correo
+  
+  ];
   const {nombre, password, id_lead, telefono, correo, sendBy} = req.body;
   try {
     if(!nombre&&!password&&!id_lead&&!telefono&&!correo&&sendBy){
       throw('Faltan campos')
-    }
-
-    const body = {
-      'nombre': nombre,
-      'password': password,
-      'telefono': telefono,
-      'correo': correo,
-      'id_lead': id_lead,
-      'sendBy': sendBy
     }
 
     const constenido = [password, nombre, telefono, correo]
@@ -139,25 +121,107 @@ app.post('/usuarios',async (req: Request, res:Response)=>{
       }
     }
 
-    if (sendBy!='whatsapp'||sendBy!='correo'){
+    if (sendBy!='whatsapp'&&sendBy!='correo'){
       throw('No se difinio por donde enviar el token')
     }
 
-    const respuesta = await axios.post(routes.usuarios,{
-      body: body
-    })
-    res.status(respuesta.status).send(respuesta.data)
-  } catch (error) {
-    res.status(400).send({error: error})
-  }
-})
+    const body = {
+      'nombre': nombre,
+      'password': password,
+      'telefono': telefono,
+      'correo': correo,
+      'id_lead': id_lead,
+      'sendBy': sendBy
+    }
 
-// Middleware para manejar rutas no existentes
+    const respuesta = await axios.post(routes.usuarios, body, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    res.status(respuesta.status).send(respuesta.data)
+  } catch (error: any) {
+    if (error.response) {
+      res.status(error.response.status).send({ data: error.response.data });
+    } else if (error.request) {
+      res.status(503).send({ error: 'No se obtuvo respuesta del servidor externo' });
+    } else {
+      res.status(400).send({ error: error.message || error });
+    }
+  }
+});
+
+app.post('/clientes',async (req: Request, res:Response)=>{
+  const caractristicas =  [
+    /^[^0-9]*$/,//nombre
+    /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,//generos
+    /^(solista|banda)$/i,//tipo
+    /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,//ubicacion
+    /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,-]+$/,//tipo_evento
+    /^(?=.*[A-Z])(?=.*[#*\-_!¡])[A-Za-z0-9#*\-_!¡]{8,}$/,//password
+    /^\d{10}$/,//telefono
+  ];
+  const {id_lead, nombre, generos, tipo, ubicacion, tipo_evento, password, telefono} = req.body;
+  try {
+    if(!nombre&&!password&&!id_lead&&!telefono&&!generos&&!tipo&&!ubicacion&&!tipo_evento){
+      throw('Faltan campos')
+    }
+
+    const constenido = [
+      nombre,
+      generos,
+      tipo,
+      ubicacion,
+      tipo_evento, 
+      password, 
+      telefono, 
+    ]
+    const nombres = [
+      'nombre',
+      'generos',
+      'tipo',
+      'ubicacion',
+      'tipo_evento', 
+      'password', 
+      'telefono', 
+    ]
+
+    for (let index = 0; index < caractristicas.length; index++) {
+      if(!caractristicas[index].test(constenido[index])){
+        throw(`${nombres[index]} no valido`)
+      }
+    }
+    const body = {
+      'id_lead': id_lead,
+      'nombre': nombre,
+      'generos': generos,
+      'tipo': tipo,
+      'ubicacion': ubicacion,
+      'tipo_evento': tipo_evento,
+      'password': password,
+      'telefono': telefono
+    }
+    const respuesta = await axios.post(routes.clientes, body, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    res.status(respuesta.status).send({data:respuesta.data})
+  } catch (error: any) {
+    if (error.response) {
+      res.status(error.response.status).send({ data: error.response.data });
+    } else if (error.request) {
+      res.status(503).send({ error: 'No se obtuvo respuesta del servidor externo' });
+    } else {
+      res.status(400).send({ error: error.message || error });
+    }
+  }
+});
+
 app.use((req, res) => {
     res.status(404).send({ error: "Ruta no encontrada en el Gateway." });
 });
 
-// Iniciar el Gateway
 const PORT = process.env.GATEWAY_PORT || 3006;
 app.listen(PORT, () => {
     console.log(`API Gateway corriendo en http://localhost:${PORT}`);

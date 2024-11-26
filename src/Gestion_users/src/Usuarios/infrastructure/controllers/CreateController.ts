@@ -23,7 +23,6 @@ export class CreateClienteController {
             data.password
           );
           if (typeof(cliente)=='object'){
-            //Code HTTP : 201 -> Creado
             res.status(201).send({
               status: "success",
               data: {
@@ -43,11 +42,9 @@ export class CreateClienteController {
         throw ('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {
-      //Code HTTP : 204 Sin contenido
       res.status(400).send({
         status: "error",
-        data: "Ocurrio un error",
-        msn: error,
+        data: error,
       });
     }
   }

@@ -45,7 +45,7 @@ export class CreateController {
     } catch (error) {
       res.status(400).send({
         status: "error",
-        msn: error,
+        data: error,
       });
     }
   }
