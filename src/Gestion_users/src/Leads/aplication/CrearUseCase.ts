@@ -7,7 +7,6 @@ export class CrearUseCase{
 
     async run (
         username: string,
-        nombre: string,
         telefono: string,
         correo: string
     ): Promise<LeadsUser|string>{
@@ -16,7 +15,6 @@ export class CrearUseCase{
             const leads = await this.repo.crear(
                 uuid,
                 username,
-                nombre,
                 telefono,
                 correo
             );

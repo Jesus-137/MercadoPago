@@ -6,9 +6,10 @@ export class CreateUseCase {
   constructor(readonly movimientoRepo: Repository) {}
 
   async run(
-    id_lead: string,
-    tipo: string,
+    id_lead: number,
+    nombre: string,
     password: string,
+    tipo: string,
     generos: string,
     ubicacion: string,
     tipo_evento: string
@@ -18,13 +19,13 @@ export class CreateUseCase {
       const result = await this.movimientoRepo.create(
         MyUUID,
         id_lead,
-        tipo,
+        nombre,
         password,
+        tipo,
         generos,
         ubicacion,
         tipo_evento
       );
-      console.log(result);
       return result;
     } catch (error) {
       return String(error);

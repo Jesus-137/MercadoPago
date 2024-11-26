@@ -3,7 +3,6 @@ export class LeadsUser{
         readonly id: number,
         readonly uuid: string,
         readonly username: string,
-        readonly nombre: string,
         readonly telefono: string,
         readonly correo: string
     ){}

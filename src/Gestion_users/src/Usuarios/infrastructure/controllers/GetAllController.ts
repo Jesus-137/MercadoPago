@@ -56,7 +56,7 @@ export class GetAllController {
     } catch (error) {
       return res.status(400).send({
         status: 'error',
-        msn: error || 'Ocurio un error desconocido'
+        data: error || 'Ocurio un error desconocido'
       });
     }
   }

@@ -7,16 +7,13 @@ export interface Repository {
   delete(userId: string): Promise<string>;
   create(
     uuid: string,
+    id_lead: number,
     nombre: string,
-    password: string,
-    telefono: string,
-    correo: string
+    password: string
   ): Promise<Usuarios | string>;
   update(
     uuid:string,
     nombre: string,
-    password: string,
-    telefono: string,
-    correo: string
-  ): Promise<Usuarios|string>;
+    password: string
+  ): Promise<string>;
 }

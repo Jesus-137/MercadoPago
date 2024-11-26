@@ -13,9 +13,10 @@ export interface Repository {
   getAll(): Promise<Clientes[]|string>;
   create(
     uuid: string,
-    id_lead: string,
-    tipo: string,
+    id_lead: number,
+    nombre: string,
     password: string,
+    tipo: string,
     generos: string,
     ubicacion: string,
     tipo_evento: string

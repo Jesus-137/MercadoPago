@@ -30,8 +30,7 @@ export class GetAllClientesController {
             clientesFiltrados = {
               id: clientes.uuid,
               nombre: clientes.nombre,
-              password: clientes.password,
-              telefono: clientes.telefono,
+              password: clientes.password
             };
           }
 

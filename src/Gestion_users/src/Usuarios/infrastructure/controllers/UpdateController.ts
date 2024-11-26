@@ -11,25 +11,17 @@ export class UpdateController {
     const uuid = req.params.uuid
 
     try {
-      if (uuid!=''||data.nombre!=''||data.password!=''||data.telefono!=''||data.correo!=''){
+      if (uuid!=''&&data.nombre!=''&&data.password!=''&&data.telefono!=''&&data.correo!=''){
         const cliente = await this.updateClientesUseCase.run(
           uuid,
           data.nombre,
-          data.password,
-          data.telefono,
-          data.correo
+          data.password
         );
 
-        if (typeof(cliente)=='object') {
+        if (cliente=='1') {
           res.status(201).send({
             status: 'success',
-            data: {
-              id: cliente.uuid,
-              nombre: cliente.nombre,
-              password: cliente.password,
-              telefono: cliente.telefono,
-              correo: cliente.correo
-            }
+            data: "Se actualizo correctamente"
           });
         } else {
           throw (cliente);

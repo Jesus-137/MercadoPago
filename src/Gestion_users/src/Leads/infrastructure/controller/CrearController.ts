@@ -13,7 +13,6 @@ export class CrearController{
                 if (data.username!=''||data.nombre!=''||data.telefono!=''){
                     const leads = await this.crearUseCase.run(
                         data.username,
-                        data.nombre,
                         data.telefono,
                         data.correo
                     );
@@ -23,7 +22,6 @@ export class CrearController{
                             data:{
                                 id: leads.uuid,
                                 user_name: leads.username,
-                                nombre: leads.nombre,
                                 telefono: leads.telefono,
                                 correo: leads.correo
                             }

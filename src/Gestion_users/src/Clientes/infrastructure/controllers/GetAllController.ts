@@ -6,6 +6,7 @@ export class GetAllController {
 
   async run(req: Request, res: Response) {
     const filtros = req.query; // Obtener todos los filtros desde la query string
+    console.log(filtros)
     const requestedFields = filtros.fields ? String(filtros.fields).split(",") : null;
 
     try {
@@ -14,8 +15,8 @@ export class GetAllController {
         let usuariosFiltrados = usuarios;
 
         // Filtrar usuarios por género musical, tipo de evento y ubicación
-        ["generoMusical", "tipoEvento", "ubicacion"].forEach((filtro) => {
-          if (filtros[filtro]) {
+        Object.keys(filtros).forEach((filtro) => {
+          if (filtro!=='fields') {
             usuariosFiltrados = usuariosFiltrados.filter((cliente: any) => {
               return cliente[filtro] && String(cliente[filtro]) === String(filtros[filtro]);
             });
@@ -40,6 +41,7 @@ export class GetAllController {
             // Campos predeterminados si 'fields' no se especifica
             return {
               id: usuario.uuid,
+              nombre: usuario.nombre,
               tipo: usuario.tipo,
               tipo_evento: usuario.tipo_evento,
               ubicacion: usuario.ubicacion,

@@ -1,4 +1,3 @@
-import { Usuarios } from "../domain/Usuarios"; 
 import { Repository } from "../domain/Repository";
 
 export class UpdateClientesUseCase {
@@ -7,17 +6,13 @@ export class UpdateClientesUseCase {
   async run(
     uuid: string,
     nombre: string,
-    password: string,
-    telefono: string,
-    correo: string
-  ): Promise<Usuarios | string> {
+    password: string
+  ): Promise<string> {
     try {
       const result = await this.movimientoRepo.update(
         uuid,
         nombre,
-        password,
-        telefono,
-        correo
+        password
       );
       console.log(result);
       return result;

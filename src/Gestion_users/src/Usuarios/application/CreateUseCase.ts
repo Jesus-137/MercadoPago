@@ -6,19 +6,17 @@ export class CreateClientesUseCase {
   constructor(readonly movimientoRepo: Repository) {}
 
   async run(
+    id_lead: number,
     nombre: string,
-    password: string,
-    telefono: string,
-    correo: string
+    password: string
   ): Promise<Usuarios | string> {
     try {
       const MyUUID = uuidv4();
       const cliente = await this.movimientoRepo.create(
         MyUUID,
+        id_lead,
         nombre,
-        password,
-        telefono,
-        correo
+        password
       );
       return cliente;
     } catch (error) {

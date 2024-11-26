@@ -5,25 +5,28 @@ import { Repository } from "../../domain/Repository";
 export class MysqlClientesRepository implements Repository {
   async create(
     uuid: string,
-    id_lead: string,
-    tipo: string,
+    id_lead: number,
+    nombre: string,
     password: string,
-    generos: string,
+    tipo: string,
+    genero_musical: string,
     ubicacion: string,
     tipo_evento: string
   ): Promise<Clientes | string> {
-    const sql = "INSERT INTO clientes (uuid, id_lead, password, genero_musical, ubicacion, tipo_evento, tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const params: any[] = [uuid, id_lead, password, generos, ubicacion, tipo_evento, tipo];
+    const sql = "INSERT INTO clientes (uuid, id_lead, nombre, password, tipo, genero_musical, tipo_evento, ubicacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    const params: any[] = [uuid, id_lead, nombre, password, tipo, genero_musical, tipo_evento, ubicacion];
     try {
       const resultado = await query(sql, params);
       const data = JSON.parse(JSON.stringify(resultado))
+      console.log(data);
       if(data.status==200){
           return new Clientes(
             uuid,
             id_lead,
-            tipo,
+            nombre,
             password,
-            generos,
+            tipo,
+            genero_musical,
             tipo_evento,
             ubicacion
           )
@@ -46,8 +49,9 @@ export class MysqlClientesRepository implements Repository {
           new Clientes(
             cliente.uuid,
             cliente.id_lead,
-            cliente.tipo,
+            cliente.nombre,
             cliente.password,
+            cliente.tipo,
             cliente.genero_musical,
             cliente.tipo_evento,
             cliente.ubicacion
@@ -103,8 +107,9 @@ export class MysqlClientesRepository implements Repository {
         return new Clientes(
           clientes[0].uuid,
           clientes[0].id_lead,
-          clientes[0].tipo,
+          clientes[0].nombre,
           clientes[0].password,
+          clientes[0].tipo,
           clientes[0].genero_musical,
           clientes[0].tipo_evento,
           clientes[0].ubicacion

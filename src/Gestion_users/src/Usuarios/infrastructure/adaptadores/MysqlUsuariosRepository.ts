@@ -15,10 +15,9 @@ export class MysqlUsuariosRepository implements Repository {
             new Usuarios(
               usuario.id,
               usuario.uuid,
+              usuario.id_lead,
               usuario.nombre,
-              usuario.password,
-              usuario.telefono,
-              usuario.correo
+              usuario.password
             )
         );
       }else{
@@ -29,15 +28,15 @@ export class MysqlUsuariosRepository implements Repository {
     }
   }
   
-  async update(uuid: string, nombre: string, password: string, telefono: string, correo: string): Promise<Usuarios | string> {
-    const sql = "UPDATE usuarios SET nombre=?, password=?, telefono=? WHERE uuid=?;";
-    const params: any[] = [nombre, password, telefono, uuid];
+  async update(uuid: string, nombre: string, password: string): Promise<string> {
+    const sql = "UPDATE usuarios SET nombre=?, password=? WHERE uuid=?;";
+    const params: any[] = [nombre, password, uuid];
     try {
-      const [result]: any = await query(sql, params);
+      const result = await query(sql, params);
       console.log(result)
       const data = JSON.parse(JSON.stringify(result));
       if(data.status==200){
-        return new Usuarios(result.insertid, uuid, nombre, password, telefono, correo);
+        return '1'
       }else{
         throw(data.message)
       }
@@ -56,10 +55,9 @@ export class MysqlUsuariosRepository implements Repository {
         return new Usuarios(
           data.data[0].id,
           data.data[0].uuid,
+          data.data[0].id_lead,
           data.data[0].nombre,
-          data.data[0].password,
-          data.data[0].telefono,
-          data.data[0].correo
+          data.data[0].password
         )
       }else{
         throw(data.message)
@@ -88,19 +86,18 @@ export class MysqlUsuariosRepository implements Repository {
 
   async create(
     uuid: string,
+    id_lead: number,
     nombre: string,
-    password: string,
-    telefono: string,
-    correo: string
+    password: string
   ): Promise<Usuarios | string> {
-    const sql = "INSERT INTO Usuarios (uuid, nombre, password, telefono, correo) VALUES (?, ?, ?, ?, ?)";
-    const params: any[] = [uuid, nombre, password, telefono, correo];
+    const sql = "INSERT INTO Usuarios (uuid, id_lead, nombre, password) VALUES (?, ?, ?, ?)";
+    const params: any[] = [uuid, id_lead, nombre, password];
     try {
-      const [result]: any = await query(sql, params);
+      const result = await query(sql, params);
       console.log(result)
       const data = JSON.parse(JSON.stringify(result))
       if(data.status==200){
-        return new Usuarios(result.insertid, uuid, nombre, password, telefono, correo);
+        return new Usuarios(data.insertid, uuid, id_lead, nombre, password);
       }else{
         throw(data.message)
       }
