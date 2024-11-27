@@ -1,5 +1,5 @@
 import express from "express";
-import { createClienteController, updateController } from "./dependencies";
+import { createClienteController, updateController, getAllController } from "./dependencies";
 
 export const reseñasRouter = express.Router();
 
@@ -10,4 +10,8 @@ reseñasRouter.post(
 reseñasRouter.put(
   "/:uuid_resenas",
   updateController.run.bind(updateController)
+);
+reseñasRouter.get(
+  '/',
+  getAllController.run.bind(getAllController)
 );

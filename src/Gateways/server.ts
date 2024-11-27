@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import { RutaServicios } from "./rutas/RutaServicios";
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { Clientes_Id } from "../ValueObjects/Cliente_id";
+import { User_Id } from "../ValueObjects/User_Id";
 
 const app = express();
 app.use(express.json());
@@ -35,6 +36,23 @@ async function validateUuidMiddleware(req: Request, res: Response, next: NextFun
       return res.status(500).json({ error: 'Error interno al validar el cliente' });
     }
 }
+
+async function validateUuidMiddlewareUser(req: Request, res: Response, next: NextFunction) {
+    const { uuid } = req.params;
+  
+    try {
+        const cliente_id = await new User_Id().get(uuid);
+        if(cliente_id==null){
+            return res.status(404).json({ error: 'Cliente no encontrado' });
+        }
+
+        req.body.id_usuario = cliente_id;
+        return next()
+    } catch (error) {
+      console.error('Error validando el UUID:', error);
+      return res.status(500).json({ error: 'Error interno al validar el cliente' });
+    }
+}
   
 const publicacionesProxy = createProxyMiddleware({
     target: 'http://localhost:3000', // URL del microservicio de publicaciones
@@ -57,7 +75,30 @@ const publicacionesProxy = createProxyMiddleware({
     },
 });
 
+const resenasProxy = createProxyMiddleware({
+    target: 'http://localhost:3000', // URL del microservicio de publicaciones
+    changeOrigin: true,
+    pathRewrite: {
+      '^/api/v1/usuarios/:uuid/resenas': '/api/v1/usuarios/:uuid/resenas', // Reescribe la ruta eliminando el prefijo
+    },
+    onProxyReq: (proxyReq, req) => {
+      // Asegurarse de que el cuerpo modificado sea enviado al microservicio
+      if (req.body) {
+        console.log(req.body)
+        const bodyData = JSON.stringify(req.body);
+  
+        // Reescribir el cuerpo de la solicitud
+        proxyReq.setHeader('Content-Type', 'application/json');
+        proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+        proxyReq.write(bodyData);
+        proxyReq.end();
+      }
+    },
+});
+
 app.use('/api/v1/clientes/:uuid/publicaciones', validateUuidMiddleware, publicacionesProxy);
+app.use('/api/v1/usuarios/:uuid/resenas', validateUuidMiddlewareUser, resenasProxy);
+
 
 app.use((req, res) => {
     res.status(404).send({ error: "Ruta no encontrada en el Gateway." });
