@@ -9,14 +9,17 @@ export class UpdateController {
     const data = req.body;
     const uuid = req.params.uuid
     try {
-      if (uuid!=''||data.generos!=''||data.tipo!=''||data.tipo_evento!=''||data.ubicacion!=''){
+      if (uuid&&data.generos&&data.tipo&&data.tipo_evento&&data.ubicacion&&data.nombre&&data.password){
         const clientes = await this.UpdateUseCase.run(
+          data.nombre,
+          data.password,
           uuid,
           data.tipo,
           data.generos,
           data.tipo_evento,
           data.ubicacion
         );
+
         if (clientes=='Se actualizo correctamente')
           res.status(200).send({
               status: 'actualizado',

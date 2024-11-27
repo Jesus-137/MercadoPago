@@ -22,7 +22,10 @@ publicacionesRouter.post(
   "/",
   createClienteController.run.bind(createClienteController)
 );
-publicacionesRouter.post('/upload', upload.single('file'), (req, res) => uploadController.handle(req, res));
+publicacionesRouter.post(
+  '/upload', 
+  upload.single('file'), 
+  (req, res) => uploadController.handle(req, res));
 publicacionesRouter.use(
   '/:uuid_resenas/resenas',
   reseñasRouter

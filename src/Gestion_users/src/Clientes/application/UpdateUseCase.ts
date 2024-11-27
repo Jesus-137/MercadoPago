@@ -4,6 +4,8 @@ export class UpdateUseCase {
   constructor(readonly movimientoRepo: Repository) {}
 
   async run(
+    nombre: string,
+    password: string,
     uuid: string,
     tipo: string,
     generos: string,
@@ -11,6 +13,8 @@ export class UpdateUseCase {
     ubicacion: string
   ): Promise<string> {
     const result = await this.movimientoRepo.update(
+      nombre, 
+      password,
       uuid,
       tipo,
       generos,

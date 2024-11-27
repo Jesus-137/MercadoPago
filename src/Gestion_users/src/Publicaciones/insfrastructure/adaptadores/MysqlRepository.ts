@@ -3,13 +3,14 @@ import { Publicaciones } from "../../domain/Publicaciones";
 import { Repository } from "../../domain/Repository";
 
 export class MysqlRepository implements Repository {
-  async getAll(): Promise<Publicaciones[] | string> {
-    const sql = "SELECT * FROM publicaciones";
+  async getAll(id_cliente: number): Promise<Publicaciones[] | string> {
+    const sql = "SELECT * FROM publicaciones WHERE id_cliente=?";
     try {
-      const resultado = await query(sql, []);
+      const resultado = await query(sql, [id_cliente]);
       const data = JSON.parse(JSON.stringify(resultado))
       if(data.status==200){
-        const clientes = Object.values(JSON.parse(JSON.stringify(data.data)));
+        console.log(data.data[0])
+        const clientes = Object.values(JSON.parse(JSON.stringify(data.data[0])));
         return clientes.map(
           (cliente: any) =>
             new Publicaciones(

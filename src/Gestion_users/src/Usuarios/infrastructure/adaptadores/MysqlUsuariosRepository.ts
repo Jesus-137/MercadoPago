@@ -34,10 +34,13 @@ export class MysqlUsuariosRepository implements Repository {
     const params: any[] = [nombre, password, uuid];
     try {
       const result = await query(sql, params);
-      console.log(result)
       const data = JSON.parse(JSON.stringify(result));
       if(data.status==200){
-        return '1'
+        if(data.data[0].affectedRows!=0){
+          return '1'
+        }else{
+          throw('No se encontro al usuario')
+        }
       }else{
         throw(data.message)
       }
@@ -54,11 +57,11 @@ export class MysqlUsuariosRepository implements Repository {
       const data = JSON.parse(JSON.stringify(result))
       if(data.status==200){
         return new Usuarios(
-          data.data[0].id,
-          data.data[0].uuid,
-          data.data[0].id_lead,
-          data.data[0].nombre,
-          data.data[0].password
+          data.data[0][0].id,
+          data.data[0][0].uuid,
+          data.data[0][0].id_lead,
+          data.data[0][0].nombre,
+          data.data[0][0].password
         )
       }else{
         throw(data.message)
@@ -73,10 +76,13 @@ export class MysqlUsuariosRepository implements Repository {
     const params: any[] = [uuid];
     try {
       const result = await query(sql, params);
-      console.log(result);
       const data = JSON.parse(JSON.stringify(result))
       if(data.status==200){
-        return 'Eliminado'
+        if(data.data[0].affectedRows!=0){
+          return 'Eliminado'
+        }else{
+          return 'No se encontro al usuario'
+        }
       }else{
         throw(data.message)
       }

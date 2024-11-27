@@ -4,6 +4,8 @@ export interface Repository {
   getByuuid(uuid: string): Promise<Clientes | string>;
   delete(uuid: string): Promise <string>;
   update(
+    nombre: string,
+    password: string,
     uuid: string,
     tipo: string,
     generos: string,

@@ -1,7 +1,7 @@
 import { Publicaciones } from "./Publicaciones";
 
 export interface Repository {
-  getAll(): Promise<Publicaciones[] | string>;
+  getAll(id_cliente: number): Promise<Publicaciones[] | string>;
   getByuuid(uuid: string): Promise<Publicaciones | string>
   create(
     uuid:string,

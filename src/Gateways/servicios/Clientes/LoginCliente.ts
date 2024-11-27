@@ -8,19 +8,20 @@ export async function LoginCliente (req: Request, res:Response){
     const clientes = process.env.CLIENTES_SERVICE_URL || "http://localhost:3000/api/v1/clientes"
     const {nombre, password} = req.query;
     try {
-        if(!nombre){
-        throw('Se necesita un nombre');
+        let respuesta
+        if(!nombre&&!password){
+            respuesta = await axios.get(clientes,{
+                params: req.query
+            })
+        }else if(nombre&&password){
+            const params = {'nombre': nombre, 'password': password}
+    
+            respuesta = await axios.get(clientes, {
+                params: params,
+            })
+        }else{
+            throw('Falta nombre o contraseña')
         }
-
-        if(!password){
-        throw('Se necesita una contraseña')
-        }
-
-        const params = {'nombre': nombre, 'password': password}
-
-        const respuesta = await axios.get(clientes, {
-        params: params,
-        })
         res.status(respuesta.status).send(respuesta.data)
     } catch (error: any) {
         res.status(error.response?.status || 500).send({

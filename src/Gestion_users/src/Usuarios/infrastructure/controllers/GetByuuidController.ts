@@ -30,7 +30,6 @@ export class GetAllClientesController {
             clientesFiltrados = {
               id: clientes.uuid,
               nombre: clientes.nombre,
-              password: clientes.password
             };
           }
 
@@ -43,7 +42,7 @@ export class GetAllClientesController {
         }
       }
     } catch (error) {
-      res.status(204).send({
+      res.status(400).send({
         status: "error",
         data: "Ocurrió un error",
         msn: error,

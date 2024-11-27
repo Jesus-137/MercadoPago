@@ -81,14 +81,18 @@ export class MysqlClientesRepository implements Repository {
     }
   }
 
-  async update(uuid: string, tipo: string, generos: string, tipo_evento: string, ubicacion: string): Promise<string> {
-    const sql = "UPDATE clientes SET tipo=?, genero_musical=?, tipo_evento=?, ubicacion=? WHERE uuid=?";
-    const params: any[] = [tipo, generos, tipo_evento, ubicacion, uuid];
+  async update(nombre: string, password:string, uuid: string, tipo: string, generos: string, tipo_evento: string, ubicacion: string): Promise<string> {
+    const sql = "UPDATE clientes SET nombre=? password=? tipo=?, genero_musical=?, tipo_evento=?, ubicacion=? WHERE uuid=?";
+    const params: any[] = [nombre, password, tipo, generos, tipo_evento, ubicacion, uuid];
     try {
       const result = await query(sql, params);
       const data = JSON.parse(JSON.stringify(result))
       if(data.status==200){
-        return 'Se actualizo correctamente'
+        if(data.data[0].affectedRows!=0){
+          return 'Se actualizo correctamente'
+        }else{
+          throw('No se encontro al usuario')
+        }
       }else{
         throw(data.message)
       }

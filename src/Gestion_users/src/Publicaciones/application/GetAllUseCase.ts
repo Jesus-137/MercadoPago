@@ -4,9 +4,9 @@ import { Repository } from "../domain/Repository";
 export class GetAllUseCase {
   constructor(readonly Repo: Repository) {}
 
-  async run(): Promise<Publicaciones[] | string> {
+  async run(id_cliente: number): Promise<Publicaciones[] | string> {
     try {
-      const result = await this.Repo.getAll();
+      const result = await this.Repo.getAll(id_cliente);
       return result;
     } catch (error) {
       return String(error);

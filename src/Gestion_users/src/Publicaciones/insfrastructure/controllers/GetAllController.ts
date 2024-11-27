@@ -7,7 +7,8 @@ export class GetAllClientesController {
 
   async run(req: Request, res: Response) {
     try {
-      const clientes = await this.getAllProductUseCase.run();
+      const id_cliente = req.body.id_cliente
+      const clientes = await this.getAllProductUseCase.run(parseInt(id_cliente));
       if (typeof(clientes)!='string')
         res.status(200).send(clientes.map((cliente: any) => {
             return {
