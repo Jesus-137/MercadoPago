@@ -23,9 +23,10 @@ export async function query(sql: string, params: any[]) {
     signale.success("Conexión exitosa a la BD");
     const result = await conn.execute(sql, params);
     conn.release();
+    // console.log(result)
     return { status: 200, data: result };
   } catch (error: any) {
-    console.error(error);
+    console.log('hola',error);
     if (error.code === "ER_DUP_ENTRY") {
       // Extraer el campo del mensaje de error
       const match = error.sqlMessage.match(/for key '.*\.(.*)'/);

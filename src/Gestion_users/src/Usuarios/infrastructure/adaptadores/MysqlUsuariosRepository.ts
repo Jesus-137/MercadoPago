@@ -55,14 +55,20 @@ export class MysqlUsuariosRepository implements Repository {
     try {
       const result = await query(sql, [uuid]);
       const data = JSON.parse(JSON.stringify(result))
+      console.log(data.data[0])
       if(data.status==200){
-        return new Usuarios(
-          data.data[0][0].id,
-          data.data[0][0].uuid,
-          data.data[0][0].id_lead,
-          data.data[0][0].nombre,
-          data.data[0][0].password
-        )
+        console.log(Object.keys(data.data[0]).length)
+        if(Object.keys(data.data[0]).length !== 0){
+          return new Usuarios(
+            data.data[0][0].id,
+            data.data[0][0].uuid,
+            data.data[0][0].id_lead,
+            data.data[0][0].nombre,
+            data.data[0][0].password
+          )
+        }else{
+          throw('No se encontro al usuario')
+        }
       }else{
         throw(data.message)
       }

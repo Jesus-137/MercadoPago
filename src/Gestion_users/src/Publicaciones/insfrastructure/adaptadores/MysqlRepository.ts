@@ -37,9 +37,9 @@ export class MysqlRepository implements Repository {
       if(data.status==200){
         return new Publicaciones(
           uuid,
-          data.data[0].descripcion,
-          data.data[0].contenido,
-          data.data[0].id_cliente
+          data.data[0][0].descripcion,
+          data.data[0][0].contenido,
+          data.data[0][0].id_cliente
         )
       }else{
         throw(data.message)
