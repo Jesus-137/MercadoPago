@@ -11,8 +11,9 @@ export class CreateController {
     try {
       console.log(req.body)
       const id_cliente = parseInt(data.id_cliente)
-      if (data.descripcion&&data.contenido&&!isNaN(id_cliente)){
+      if (data.titulo&&data.descripcion&&data.contenido&&!isNaN(id_cliente)){
         const cliente = await this.createClienteUseCase.run(
+          data.titulo,
           data.descripcion,
           data.contenido,
           id_cliente
@@ -22,6 +23,7 @@ export class CreateController {
             status: "success",
             data: {
               id: cliente.uuid,
+              titulo: cliente.titulo,
               descripcion: cliente.descripcion,
               contenido: cliente.contenido
             },

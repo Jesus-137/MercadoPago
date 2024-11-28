@@ -4,7 +4,7 @@ import { Repository } from "../../domain/Repository";
 
 export class MysqlReseñasRepository implements Repository {
   async getAll(id_usuario: number): Promise<Reseñas[] | string> {
-    const sql = 'SELECT * FROM resenas WHERE id_usuario=?;';
+    const sql = 'SELECT * FROM resenas WHERE id_publicacion=?;';
     try {
       const result = await query(sql, [id_usuario]);
       const data = JSON.parse(JSON.stringify(result));

@@ -8,6 +8,7 @@ dotenv.config();
 export async function buscar (req: Request, res: Response) {
     try {
         const { texto } = req.body;
+        console.log(texto)
         const clientes = process.env.CLIENTES_SERVICE_URL || "http://localhost:3000/api/v1/clientes"
         if (!texto) {
             return res.status(400).send({ error: "El parámetro 'texto' es obligatorio." });

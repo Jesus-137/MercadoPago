@@ -47,6 +47,7 @@ export async function RegistroUsuario (req: Request, res:Response){
       });
       res.status(respuesta.status).send(respuesta.data)
     } catch (error: any) {
+      console.log(error)
       if (error.response) {
         res.status(error.response.status).send({ data: error.response.data });
       } else if (error.request) {

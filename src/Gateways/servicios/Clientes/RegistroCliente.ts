@@ -15,9 +15,9 @@ export async function RegistroCliente (req: Request, res:Response){
       /^(?=.*[A-Z])(?=.*[#*\-_!¡])[A-Za-z0-9#*\-_!¡]{8,}$/,//password
       /^\d{10}$/,//telefono
     ];
-    const {id_lead, nombre, generos, tipo, ubicacion, tipo_evento, password, telefono} = req.body;
+    const {id_lead, foto_perfil, nombre, generos, tipo, ubicacion, tipo_evento, password, telefono} = req.body;
     try {
-      if(!nombre&&!password&&!id_lead&&!telefono&&!generos&&!tipo&&!ubicacion&&!tipo_evento){
+      if(!nombre&&!foto_perfil&&!password&&!id_lead&&!telefono&&!generos&&!tipo&&!ubicacion&&!tipo_evento){
         throw('Faltan campos')
       }
   
@@ -51,6 +51,7 @@ export async function RegistroCliente (req: Request, res:Response){
         'generos': generos,
         'tipo': tipo,
         'ubicacion': ubicacion,
+        'foto_perfil': foto_perfil,
         'tipo_evento': tipo_evento,
         'password': password,
         'telefono': telefono

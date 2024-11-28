@@ -10,16 +10,21 @@ export class GetByuuidController {
     try {
       if (uuid!=''){
         const clientes = await this.getByuuidUseCase.run(uuid);
-        if (typeof(clientes)=='object')
-          res.status(200).send(
-            {
-              id: clientes.uuid,
-              tipo: clientes.tipo,
-              tipo_evento: clientes.tipo_evento,
-              ubicacion: clientes.ubicacion,
-              generos: clientes.genero_musical
+        if (typeof(clientes)=='object'){
+          res.status(200).send({
+              status: "encontrado",
+              data:{
+                id: clientes.uuid,
+                id_lead: clientes.id_lead,
+                foto_perfil: clientes.foto_perfil,
+                tipo: clientes.tipo,
+                tipo_evento: clientes.tipo_evento,
+                ubicacion: clientes.ubicacion,
+                generos: clientes.genero_musical
+              }
             }
           );
+        }
         else
           throw(clientes)
       }else{

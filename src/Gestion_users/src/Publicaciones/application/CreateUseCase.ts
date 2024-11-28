@@ -6,6 +6,7 @@ export class CreateUseCase {
   constructor(readonly Repo: Repository) {}
 
   async run(
+    titulo: string,
     descripcion: string,
     contenido: string,
     id_cliente: number
@@ -14,6 +15,7 @@ export class CreateUseCase {
       const MyUUID = uuidv4()
       const cliente = await this.Repo.create(
         MyUUID,
+        titulo,
         descripcion,
         contenido,
         id_cliente

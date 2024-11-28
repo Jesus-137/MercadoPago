@@ -7,6 +7,7 @@ export class CreateUseCase {
 
   async run(
     id_lead: number,
+    foto_perfil: string,
     nombre: string,
     password: string,
     tipo: string,
@@ -19,6 +20,7 @@ export class CreateUseCase {
       const result = await this.movimientoRepo.create(
         MyUUID,
         id_lead,
+        foto_perfil,
         nombre,
         password,
         tipo,

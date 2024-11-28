@@ -15,6 +15,7 @@ export class GetByuuidController {
             status: "success",
             data: {
               id: cliente.uuid,
+              titulo: cliente.titulo,
               descripcion: cliente.descripcion,
               contenido: cliente.contenido
             },

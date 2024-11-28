@@ -16,6 +16,7 @@ export interface Repository {
   create(
     uuid: string,
     id_lead: number,
+    foto_perfil: string,
     nombre: string,
     password: string,
     tipo: string,

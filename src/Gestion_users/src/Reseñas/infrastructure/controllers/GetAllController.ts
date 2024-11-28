@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { GetAllUseCase } from "../../application/GetAllUseCase";
+import { Usuarios_uuid } from "../../../../../ValueObjects/Usuarios_uuid";
+import { Usuarios_Nombre } from "../../../../../ValueObjects/Usuarios_nombre";
 
 export class GetAllController {
   constructor(readonly getAllUseCase: GetAllUseCase) {}
@@ -9,8 +11,9 @@ export class GetAllController {
     const requestedFields = filtros.fields ? String(filtros.fields).split(",") : null;
 
     try {
-        const id_usuario = req.body.id_usuario;
+        const id_usuario = req.body.id_cliente;
         const usuarios = await this.getAllUseCase.run(id_usuario); // Obtener todos los usuarios desde el caso de uso
+        console.log('hoolla',usuarios)
         if (typeof(usuarios)=='object') {
             let usuariosFiltrados = usuarios;
 
@@ -24,11 +27,21 @@ export class GetAllController {
             });
 
             if (!(usuariosFiltrados.length > 0)) {
-            throw "No se encontraron registros con los filtros especificados.";
+              throw "No se encontraron registros con los filtros especificados.";
+            }
+
+            const nombre_usuarios = new Array()
+            const id_usuarios = new Array()
+            
+            for (let index = 0; index < usuariosFiltrados.length; index++) {
+              const id_usuario = await new Usuarios_uuid().get(usuariosFiltrados[index].id_usuario)
+              const nombre_usuario = await new Usuarios_Nombre().get(usuariosFiltrados[index].id_usuario)
+              id_usuarios.push(id_usuario)
+              nombre_usuarios.push(nombre_usuario)
             }
 
             // Mapear datos a los campos especificados en 'fields' o a los predeterminados
-            const data = usuariosFiltrados.map((usuario: any) => {
+            const data = usuariosFiltrados.map((usuario: any, index: number) => {
             if (requestedFields) {
                 // Crear un objeto con solo los campos solicitados
                 return requestedFields.reduce((filteredUser: any, field) => {
@@ -38,13 +51,12 @@ export class GetAllController {
                 return filteredUser;
                 }, {});
             } else {
-                // Campos predeterminados si 'fields' no se especifica
                 return {
-                id: usuario.uuid,
-                id_usuario: usuario.id_usuario,
-                id_publicacion: usuario.id_publicacion,
-                comentario: usuario.comentario,
-                estrellas: usuario.estrellas,
+                  id: usuario.uuid,
+                  id_usuario: id_usuarios[index],
+                  comentario: usuario.comentario,
+                  estrellas: usuario.estrellas,
+                  nombre_usuario: nombre_usuarios[index]
                 };
             }
             });

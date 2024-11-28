@@ -26,7 +26,7 @@ export class CrearController{
                                 correo: leads.correo
                             }
                         });
-                        produceMessage(data.sendBy, `{"id": ${leads.uuid}, "telefono": ${leads.telefono}, "correo": ${leads.correo}}`)
+                        produceMessage("notificacion", `{"sendBy": ${data.sendBy},"id": ${leads.uuid}, "telefono": ${leads.telefono}, "correo": ${leads.correo}}`)
                     }else{
                         throw (leads);
                     }

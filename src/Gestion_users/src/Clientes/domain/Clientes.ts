@@ -2,6 +2,7 @@ export class Clientes {
   constructor(
     readonly uuid: string,
     readonly id_lead: number,
+    readonly foto_perfil: string,
     readonly nombre: string,
     readonly password: string,
     readonly tipo: string,

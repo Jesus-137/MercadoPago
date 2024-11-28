@@ -34,6 +34,7 @@ export class CreateClienteController {
             produceMessage('notificacion', `{"id": "${cliente.uuid}", "sendBy": "${data.sendBy}", "telefono": "${data.telefono}", "correo": "${data.correo}"}`)
           }
           else
+            console.log(cliente)
             throw(cliente)
         }else{
           throw('Faltan campos')

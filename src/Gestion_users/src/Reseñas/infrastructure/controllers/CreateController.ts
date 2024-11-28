@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUseCase } from "../../application/CreateUseCase";
-import { Publicaciones_Id } from "../../../../../ValueObjects/Publicaciones_id";
+import { Clientes_Id } from "../../../../../ValueObjects/Cliente_id";
 
 export class CreateClienteController {
   constructor (
@@ -11,16 +11,12 @@ export class CreateClienteController {
     const data = req.body;
     try {
       const estrellas =  parseInt(data.estrellas);
-      console.log(!data.id_usuario)
-      if (data.id_usuario&&data.id_publicacion&&data.comentario&&!isNaN(estrellas)){
-        const id_publicacion = await new Publicaciones_Id().get(data.id_publicacion);
-        console.log(id_publicacion)
-        if(typeof(id_publicacion)!='number'){
-          throw('No se encontro la publicacion');
-        }else if(id_publicacion){
+      if (data.id_usuario&&data.id_cliente&&data.comentario&&!isNaN(estrellas)){
+        const id_cliente = await new Clientes_Id().get(data.id_cliente);
+        if(id_cliente){
           const cliente = await this.createUseCase.run(
             data.id_usuario,
-            id_publicacion,
+            id_cliente,
             data.comentario,
             estrellas
           );
@@ -37,6 +33,8 @@ export class CreateClienteController {
           }
           else
             throw (cliente)
+        }else{
+          throw('Cliente no encontrado')
         }
       }else{
         throw ('Campos insuficientes por favor de verificarlos');
