@@ -1,26 +1,44 @@
 import { Request, Response } from "express";
+import axios from 'axios';
 import { CreateUseCase } from "../../application/CreateUseCase";
 import { Clientes_Id } from "../../../../../ValueObjects/Cliente_id";
 
 export class CreateClienteController {
-  constructor (
-    readonly createUseCase: CreateUseCase,
-    ) {}
+  constructor(readonly createUseCase: CreateUseCase) {}
 
   async run(req: Request, res: Response) {
     const data = req.body;
     try {
-      const estrellas =  parseInt(data.estrellas);
-      if (data.id_usuario&&data.id_cliente&&data.comentario&&!isNaN(estrellas)){
+      
+      if (data.id_usuario && data.id_cliente && data.comentario) {
         const id_cliente = await new Clientes_Id().get(data.id_cliente);
-        if(id_cliente){
+        if (id_cliente) {
+          // Llamar a los endpoints de Flask
+          const corregirResponse = await axios.post('http://localhost:5000/corregir', {
+            texto: data.comentario
+          });
+          const textoCorregido = corregirResponse.data.texto_corregido;
+          const censurarResponse = await axios.post('http://localhost:5000/censurar', {
+            texto: textoCorregido
+          });
+          const textoCensurado = censurarResponse.data.texto_censurado;
+          const sentimientoResponse = await axios.post('http://localhost:5000/analizar_sentimiento', {
+            texto: textoCensurado
+          });
+          console.log(sentimientoResponse.data.calificacion_estrellas)
+
+          // Obtener los resultados de la API de Flask
+          const sentimiento = sentimientoResponse.data.calificacion_estrellas;
+
+          // Ahora puedes utilizar los resultados de Flask junto con la lógica de tu aplicación
           const cliente = await this.createUseCase.run(
             data.id_usuario,
             id_cliente,
-            data.comentario,
-            estrellas
+            textoCensurado,  // Puedes usar el texto censurado, corregido o el original
+            sentimiento
           );
-          if (typeof(cliente)=='object'){
+
+          if (typeof(cliente) == 'object') {
             res.status(201).send({
               status: "success",
               data: {
@@ -29,14 +47,14 @@ export class CreateClienteController {
                 estrellas: cliente.estrellas
               },
             });
-            console.log('Registro exitoso')
+            console.log('Registro exitoso');
+          } else {
+            throw(cliente);
           }
-          else
-            throw (cliente)
-        }else{
-          throw('Cliente no encontrado')
+        } else {
+          throw('Cliente no encontrado');
         }
-      }else{
+      } else {
         throw ('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {

@@ -10,4 +10,5 @@ export interface Repository {
     contenido: string,
     id_cliente: number
   ): Promise<Publicaciones | string>;
+  getByDay(id: number): Promise<string>;
 }

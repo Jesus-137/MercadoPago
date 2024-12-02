@@ -3,6 +3,25 @@ import { Publicaciones } from "../../domain/Publicaciones";
 import { Repository } from "../../domain/Repository";
 
 export class MysqlRepository implements Repository {
+  async getByDay(id: number): Promise<string> {
+    const sql = "SELECT DATE_FORMAT(fecha_creacion, '%Y-%m-%D') AS dia, COUNT(*) AS total_publicaciones FROM publicaciones where id_cliente=? GROUP BY dia ORDER BY dia;";
+    console.log(id)
+    try {
+      const result = await query(sql, [id]);
+      const data = JSON.parse(JSON.stringify(result))
+      if(data.status==200){
+        console.log(data.data[0])
+        const publicacion = JSON.stringify(data.data[0])
+        return `${publicacion}`
+      }else{
+        console.log('hola')
+        throw(data.message)
+      }
+    } catch (error) {
+      console.log('hola')
+      return String(error)
+    }
+  }
   async getAll(id_cliente: number|null): Promise<Publicaciones[] | string> {
     let sql;
     let params: any[];

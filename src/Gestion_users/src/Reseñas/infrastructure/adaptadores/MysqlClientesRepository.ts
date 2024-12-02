@@ -4,7 +4,7 @@ import { Repository } from "../../domain/Repository";
 
 export class MysqlReseñasRepository implements Repository {
   async getAll(id_usuario: number): Promise<Reseñas[] | string> {
-    const sql = 'SELECT * FROM resenas WHERE id_publicacion=?;';
+    const sql = 'SELECT * FROM resenas WHERE comentado=?;';
     try {
       const result = await query(sql, [id_usuario]);
       const data = JSON.parse(JSON.stringify(result));
@@ -13,8 +13,8 @@ export class MysqlReseñasRepository implements Repository {
         return resenas.map((resena: any)=>(
           new Reseñas(
             resena.uuid,
-            resena.id_usuario,
-            resena.id_publicacion,
+            resena.comentador,
+            resena.comentado,
             resena.comentario,
             resena.estrellas
           )
@@ -56,8 +56,7 @@ export class MysqlReseñasRepository implements Repository {
     comentario: string,
     estrellas: number
   ): Promise<Reseñas | string> {
-    const sql =
-"INSERT INTO resenas (uuid, id_usuario, id_publicacion, comentario, estrellas) VALUES (?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO resenas (uuid, comentador, comentado, comentario, estrellas) VALUES (?, ?, ?, ?, ?)";
     const params: any[] = [uuid, id_usuario, id_publicacion, comentario, estrellas];
     try {
       const result = await query(sql, params);

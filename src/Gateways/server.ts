@@ -2,7 +2,6 @@ import express, { Request, Response, NextFunction } from "express";
 import { RutaServicios } from "./rutas/RutaServicios";
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { Clientes_Id } from "../ValueObjects/Cliente_id";
-// import { User_Id } from "../ValueObjects/User_Id";
 
 const app = express();
 app.use(express.json());
@@ -37,22 +36,22 @@ async function validateUuidMiddleware(req: Request, res: Response, next: NextFun
     }
 }
 
-// async function validateUuidMiddlewareUser(req: Request, res: Response, next: NextFunction) {
-//     const { uuid } = req.params;
+async function validateUuidMiddlewareUser(req: Request, res: Response, next: NextFunction) {
+    const { uuid } = req.params;
   
-//     try {
-//         const cliente_id = await new User_Id().get(uuid);
-//         if(cliente_id==null){
-//             return res.status(404).json({ error: 'Usuario no encontrado' });
-//         }
+    try {
+        const cliente_id = await new Clientes_Id().get(uuid);
+        if(cliente_id==null){
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
 
-//         req.body.id_usuario = cliente_id;
-//         return next()
-//     } catch (error) {
-//       console.error('Error validando el UUID:', error);
-//       return res.status(500).json({ error: 'Error interno al validar el cliente' });
-//     }
-// }
+        req.body.id_usuario = cliente_id;
+        return next()
+    } catch (error) {
+      console.error('Error validando el UUID:', error);
+      return res.status(500).json({ error: 'Error interno al validar el cliente' });
+    }
+}
   
 const publicacionesProxy = createProxyMiddleware({
     target: 'http://localhost:3000', // URL del microservicio de publicaciones
@@ -118,7 +117,7 @@ const resenasProxy = createProxyMiddleware({
 
 app.use('/api/v1/clientes/:uuid/publicaciones', validateUuidMiddleware, publicacionesProxy);
 app.use("/api/v1/publicaciones", publicacionesGetAllProxy)
-app.use('/api/v1/usuarios/:uuid/resenas', validateUuidMiddleware, resenasProxy);
+app.use('/api/v1/usuarios/:uuid/resenas', validateUuidMiddlewareUser, resenasProxy);
 
 
 app.use((req, res) => {

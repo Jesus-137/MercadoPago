@@ -11,7 +11,7 @@ export class GetAllController {
     const requestedFields = filtros.fields ? String(filtros.fields).split(",") : null;
 
     try {
-        const id_usuario = req.body.id_cliente;
+        const id_usuario = req.body.id_usuario;
         const usuarios = await this.getAllUseCase.run(id_usuario); // Obtener todos los usuarios desde el caso de uso
         console.log('hoolla',usuarios)
         if (typeof(usuarios)=='object') {

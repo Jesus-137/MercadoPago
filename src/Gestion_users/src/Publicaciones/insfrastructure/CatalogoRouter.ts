@@ -4,7 +4,7 @@ import express from "express";
 import multer from 'multer';
 import { createClienteController } from "./dependencies";
 import { getAllClientesController } from "./dependencies";
-import { getByuuidController, uploadController } from "./dependencies";
+import { getByuuidController, uploadController, getByDayController } from "./dependencies";
 
 const upload = multer({ storage: multer.memoryStorage() });
 export const publicacionesRouter = express.Router();
@@ -12,6 +12,10 @@ export const publicacionesRouter = express.Router();
 publicacionesRouter.get(
   "/",
   getAllClientesController.run.bind(getAllClientesController)
+);
+publicacionesRouter.get(
+  '/dia',
+  getByDayController.run.bind(getByDayController)
 );
 publicacionesRouter.get(
   "/:uuid",

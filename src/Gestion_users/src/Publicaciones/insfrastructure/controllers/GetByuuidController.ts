@@ -27,7 +27,7 @@ export class GetByuuidController {
       }
     } catch (error) {
       //Code HTTP : 204 Sin contenido
-      res.status(204).send({
+      res.status(400).send({
         status: "error",
         data: "Ocurrio un error",
         msn: error,
