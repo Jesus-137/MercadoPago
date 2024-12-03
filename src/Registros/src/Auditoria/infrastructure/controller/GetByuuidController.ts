@@ -16,6 +16,7 @@ export class GetByuuidController{
                             id: auditoria.uuid,
                             tarjet: auditoria.tarjet,
                             accion: auditoria.accion,
+                            tipo: auditoria.tipo,
                             creado: auditoria.fecha_creacion
                         }
                     })

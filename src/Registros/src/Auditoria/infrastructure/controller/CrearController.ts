@@ -7,10 +7,11 @@ export class CrearController{
     async run (req: Request, res: Response){
         const data = req.body
         try {
-            if(data.tarjet != '' || data.accion != ''){
+            if(data.tarjet&&data.accion&&data.tipo){
                 const auditoria = await this.crearUseCase.run(
                     data.tarjet,
-                    data.accion
+                    data.accion,
+                    data.tipo
                 );
                 if (auditoria){
                     res.status(201).send({
@@ -19,6 +20,7 @@ export class CrearController{
                             id: auditoria.uuid,
                             tarjet: auditoria.tarjet,
                             accion: auditoria.accion,
+                            tipo: auditoria.tipo,
                             creacion: auditoria.fecha_creacion
                         }
                     })

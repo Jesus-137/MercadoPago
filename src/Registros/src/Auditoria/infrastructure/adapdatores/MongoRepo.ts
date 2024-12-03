@@ -5,9 +5,10 @@ import { Repository } from "../../domian/Repository";
 export class MongoRepo implements Repository {
     async crear(
         tarjet: string,
-        accion: string
+        accion: string,
+        tipo: string
     ): Promise<Auditoria | null> {
-        const doc = { tarjet, accion };
+        const doc = { tarjet, accion, tipo };
         try {
             const db = await connectToMongo();
             const resultado = await db.collection("logs").insertOne({
@@ -15,7 +16,7 @@ export class MongoRepo implements Repository {
                 fecha_creacion: new Date()
             });
             console.log(resultado);
-            return new Auditoria(resultado.insertedId.toString(), tarjet, accion, new Date().toString());
+            return new Auditoria(resultado.insertedId.toString(), tarjet, accion, tipo, new Date().toString());
         } catch (error) {
             return null;
         }
@@ -30,6 +31,7 @@ export class MongoRepo implements Repository {
                     auditoria._id.toString(),
                     auditoria.tarjet,
                     auditoria.accion,
+                    auditoria.tipo,
                     auditoria.fecha_creacion
                 )
             );
@@ -48,6 +50,7 @@ export class MongoRepo implements Repository {
                 auditoria._id.toString(),
                 auditoria.tarjet,
                 auditoria.accion,
+                auditoria.tipo,
                 auditoria.fecha_creacion
             );
         } catch (error) {

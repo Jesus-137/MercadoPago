@@ -15,6 +15,7 @@ export class GetAllController{
                         id: auditoria.uuid,
                         tarjet: auditoria.tarjet,
                         accion: auditoria.accion,
+                        tipo: auditoria.tipo,
                         creacion: auditoria.fecha_creacion
                     }))
                 })

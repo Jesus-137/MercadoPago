@@ -6,12 +6,14 @@ export class CrearUseCase{
 
     async run (
         tarjet: string,
-        accion: string
+        accion: string,
+        tipo: string
     ): Promise< Auditoria|null >{
         try {
             const auditoria = await this.repo.crear(
                 tarjet,
-                accion
+                accion,
+                tipo
             );
             return auditoria;
         } catch (error) {
