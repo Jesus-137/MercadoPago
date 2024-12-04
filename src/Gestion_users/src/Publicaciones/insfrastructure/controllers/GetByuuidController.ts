@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import { GetByuuidUseCase } from "../../application/GetByuuidUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class GetByuuidController {
   constructor(readonly getByIdClienteUseCase: GetByuuidUseCase) {}
@@ -26,6 +27,7 @@ export class GetByuuidController {
         throw ('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${uuid}, "accion": ${String(error)}}`)
       //Code HTTP : 204 Sin contenido
       res.status(400).send({
         status: "error",

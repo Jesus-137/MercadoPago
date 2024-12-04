@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import { GetByuuidUseCase } from "../../application/GetuuidUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class GetByuuidController {
   constructor(readonly getByuuidUseCase: GetByuuidUseCase) {}
@@ -31,6 +32,7 @@ export class GetByuuidController {
         throw ('No se encontro el usuario verificar el id');
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${uuid}, "accion": ${String(error)}}`)
       //Code HTTP : 204 Sin contenido
       res.status(400).send({
         status: "error",

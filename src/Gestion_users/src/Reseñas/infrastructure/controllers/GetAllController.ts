@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { GetAllUseCase } from "../../application/GetAllUseCase";
 import { Usuarios_uuid } from "../../../../../ValueObjects/Usuarios_uuid";
 import { Usuarios_Nombre } from "../../../../../ValueObjects/Usuarios_nombre";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class GetAllController {
   constructor(readonly getAllUseCase: GetAllUseCase) {}
@@ -10,8 +11,8 @@ export class GetAllController {
     const filtros = req.query; // Obtener todos los filtros desde la query string
     const requestedFields = filtros.fields ? String(filtros.fields).split(",") : null;
 
+    const id_usuario = req.body.id_usuario;
     try {
-        const id_usuario = req.body.id_usuario;
         const usuarios = await this.getAllUseCase.run(id_usuario); // Obtener todos los usuarios desde el caso de uso
         console.log('hoolla',usuarios)
         if (typeof(usuarios)=='object') {
@@ -69,6 +70,7 @@ export class GetAllController {
             throw (usuarios);
         }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${id_usuario}, "accion": ${String(error)}}`)
       return res.status(400).send({
         status: "error",
         msn: error || "Ocurrió un error desconocido.",

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { MandarCorreoUseCase } from '../../application/MandarCorreoUseCase'; 
 import { consumeMessages } from '../../../../../Rabbit/ConsumeUseCase';
+import { produceMessage } from '../../../../../Rabbit/SendEventUseCase';
 
 export class MandarCorreoController {
     constructor(private mandarCorreoUseCase: MandarCorreoUseCase) {
@@ -26,6 +27,7 @@ export class MandarCorreoController {
             await this.mandarCorreoUseCase.execute(to, subject, message);
             return res.status(200).json({ message: 'Correo enviado exitosamente' });
         } catch (error) {
+            produceMessage('Error', `{"tarjet": ${to}, "accion": ${String(error)}}`)
             return res.status(500).json({ error: 'Error al enviar correo' });
         }
     }

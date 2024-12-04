@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import axios from 'axios';
 import { CreateUseCase } from "../../application/CreateUseCase";
 import { Clientes_Id } from "../../../../../ValueObjects/Cliente_id";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class CreateClienteController {
   constructor(readonly createUseCase: CreateUseCase) {}
@@ -58,6 +59,7 @@ export class CreateClienteController {
         throw ('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${data.id_usuario}, "accion": ${String(error)}}`)
       res.status(400).send({
         status: "error",
         data: "Ocurrio un error",

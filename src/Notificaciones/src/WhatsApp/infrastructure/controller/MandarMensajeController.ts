@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { MandarMensajeUseCase } from "../../aplication/MandarMensajeUseCase";
 import { consumeMessages } from "../../../../../Rabbit/ConsumeUseCase"; 
 import { Leads_Id } from "../../../../../ValueObjects/Leads_id"; 
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class MandarMensajeController {
   constructor(private mandarMensajeUseCase: MandarMensajeUseCase) {
@@ -35,6 +36,7 @@ export class MandarMensajeController {
         throw ('No se encontro al usuario verificar el id')
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${uuid}, "accion": ${String(error)}}`)
       res.status(400).send({
         status: "Error",
         msn: error

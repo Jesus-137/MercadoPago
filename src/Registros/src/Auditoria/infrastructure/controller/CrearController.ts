@@ -1,8 +1,15 @@
 import { Request, Response } from "express";
 import { CrearUseCase } from "../../aplication/CrearUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
+import { consumeMessages } from "../../../../../Rabbit/ConsumeUseCase";
 
 export class CrearController{
-    constructor (private crearUseCase: CrearUseCase){}
+    constructor (private crearUseCase: CrearUseCase){
+        consumeMessages('Error', (msn:string)=>{
+            const data = JSON.parse(msn)
+            crearUseCase.run(data.tarjet, data.accion, 'Error')
+        })
+    }
     
     async run (req: Request, res: Response){
         const data = req.body
@@ -31,6 +38,7 @@ export class CrearController{
                 throw ('Campos insuficientes por farvor de verificarlos')
             }
         } catch (error) {
+            produceMessage('Error', `{"tarjet": "registro", "accion": ${String(error)}}`)
             res.status(400).send({
                 status: 'Error',
                 msn: error

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { GetAllClientesUseCase } from "../../application/GetByuuidUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class GetAllClientesController {
   constructor(readonly getAllProductUseCase: GetAllClientesUseCase) {}
@@ -42,6 +43,7 @@ export class GetAllClientesController {
         }
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${uuid}, "accion": ${String(error)}}`)
       res.status(400).send({
         status: "error",
         data: "Ocurrió un error",

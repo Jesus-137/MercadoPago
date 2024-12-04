@@ -4,13 +4,14 @@ import { GetAllUseCase } from "../../application/GetAllUseCase";
 import { Clientes_Nombre } from "../../../../../ValueObjects/Cliente_nombre";
 import { Publicaciones } from "../../domain/Publicaciones";
 import { Clientes_uuid } from "../../../../../ValueObjects/Clientes_uuid";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class GetAllClientesController {
   constructor(readonly getAllProductUseCase: GetAllUseCase) {}
 
   async run(req: Request, res: Response) {
+    let id_cliente = req.body.id_cliente
     try {
-      let id_cliente = req.body.id_cliente
       if(!id_cliente){
         id_cliente = null
       }
@@ -43,6 +44,7 @@ export class GetAllClientesController {
       else
         throw (clientes)
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${id_cliente}, "accion": ${String(error)}}`)
       //Code HTTP : 204 Sin contenido
       res.status(400).send({
         status: "error",

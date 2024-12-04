@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { GetAllUseCase } from "../../aplication/GetAllUseCase";
 import { Auditoria } from "../../domian/Auditoria";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class GetAllController{
     constructor (private getAllUseCase: GetAllUseCase){}
@@ -23,6 +24,7 @@ export class GetAllController{
                 throw ('Ocurio un error desconocido')
             }
         } catch (error) {
+            produceMessage('Error', `{"tarjet": "admin", "accion": ${String(error)}}`)
             res.status(400).send({
                 status: 'Error',
                 msn: error

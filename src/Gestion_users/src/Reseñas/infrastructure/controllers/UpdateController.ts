@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UpdateUseCase } from '../../application/UpdateUseCase';
 import { User_Id } from '../../../../../ValueObjects/User_Id';
 import { Publicaciones_Id } from '../../../../../ValueObjects/Publicaciones_id';
+import { produceMessage } from '../../../../../Rabbit/SendEventUseCase';
 
 export class UpdateController {
   constructor(
@@ -45,6 +46,7 @@ export class UpdateController {
           throw('No se encontro la publicacion o el usuario')
         }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${uuid}, "accion": ${String(error)}}`)
       return res.status(500).send({
         status: 'error',
         data: 'Ocurrió un error en la actualización',

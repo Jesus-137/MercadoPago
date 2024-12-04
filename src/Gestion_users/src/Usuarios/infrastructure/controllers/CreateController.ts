@@ -43,6 +43,7 @@ export class CreateClienteController {
         throw ('Campos insuficientes por favor de verificarlos');
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${data.id_lead}, "accion": ${String(error)}}`)
       res.status(400).send({
         status: "error",
         data: error,

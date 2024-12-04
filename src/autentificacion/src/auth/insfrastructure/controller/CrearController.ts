@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { CrearUseCase } from "../../aplication/CrearUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class CrearController{
     constructor(private crearUseCase: CrearUseCase){}
@@ -27,6 +28,7 @@ export class CrearController{
                 throw('Ocurio un error desconocido');
             }
         } catch (error) {
+            produceMessage('Error', `{"tarjet": ${data.uuid}, "accion": ${String(error)}}`)
             res.status(400).send({
                 status: 'error',
                 msn: error

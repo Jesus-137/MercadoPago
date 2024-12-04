@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UpdateUseCase } from "../../application/UpdateUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class UpdateController {
   constructor (
@@ -35,6 +36,7 @@ export class UpdateController {
         throw ('Campos insuficientes por favor de verificar');
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${uuid}, "accion": ${String(error)}}`)
       res.status(204).send({
         status: "error",
         data: "Ocurrio un error",

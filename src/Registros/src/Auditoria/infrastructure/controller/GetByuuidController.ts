@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { GetByuuidUseCase } from "../../aplication/GetByuuidUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class GetByuuidController{
     constructor(private getByuuidUseCase: GetByuuidUseCase){}
@@ -27,6 +28,7 @@ export class GetByuuidController{
                 throw ('El reigistro no se encontro verificar el id')
             }
         } catch (error) {
+            produceMessage('Error', `{"tarjet": "admin", "accion": ${String(error)}}`)
             res.status(400).send({
                 status: 'Error',
                 msn: error

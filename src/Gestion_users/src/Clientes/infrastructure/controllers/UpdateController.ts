@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import { UpdateUseCase } from "../../application/UpdateUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class UpdateController {
   constructor(readonly UpdateUseCase: UpdateUseCase) {}
@@ -31,6 +32,7 @@ export class UpdateController {
         throw ('Campos insuficientes por farvor de verificarlos');
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${uuid}, "accion": ${String(error)}}`)
       //Code HTTP : 204 Sin contenido
       res.status(204).send({
         status: "error",

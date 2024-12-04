@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUseCase } from "../../application/CreateUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class CreateController {
   constructor (
@@ -36,6 +37,7 @@ export class CreateController {
         throw ('Campos insuficiente por favor de verificarlos');
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": ${data.id_cliente}, "accion": ${String(error)}}`)
       res.status(400).send({
         status: "error",
         data: "Ocurrio un error",

@@ -37,6 +37,7 @@ export class CrearController{
                 throw ('No se especifico por donde mandar la notificación')
             }
         } catch (error) {
+            produceMessage('Error', `{"tarjet": "Contacto", "accion": ${String(error)}}`)
             res.status(400).send({
                 status: 'Error',
                 msn: error

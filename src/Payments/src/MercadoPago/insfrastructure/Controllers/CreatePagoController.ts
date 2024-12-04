@@ -39,6 +39,7 @@ export class CreatePagoController{
                 throw ('El id no es valido')
             }
         } catch (error) {
+            produceMessage('Error', `{"tarjet": ${uuid}, "accion": ${String(error)}}`)
             res.status(400).send({
                 status: 'Error',
                 mensaje: error

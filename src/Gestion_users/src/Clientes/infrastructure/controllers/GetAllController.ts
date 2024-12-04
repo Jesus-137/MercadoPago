@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { GetAllUseCase } from "../../application/GetAllUseCase";
+import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
 
 export class GetAllController {
   constructor(readonly getAllUseCase: GetAllUseCase) {}
@@ -58,6 +59,7 @@ export class GetAllController {
         throw (usuarios);
       }
     } catch (error) {
+      produceMessage('Error', `{"tarjet": "Cliente", "accion": ${String(error)}}`)
       return res.status(400).send({
         status: "error",
         msn: error || "Ocurrió un error desconocido.",
