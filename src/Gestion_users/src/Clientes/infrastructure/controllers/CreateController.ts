@@ -42,7 +42,7 @@ export class CreateController {
         throw ('Campos insuficientes por farvor de verificarlos')
       }
     } catch (error) {
-      produceMessage('Error', `{"tarjet": ${data.id_lead}, "accion": ${String(error)}}`)
+      produceMessage('Error', `{"tarjet": "${data.id_lead}", "accion": "${String(error)}"}`)
       res.status(400).send({
         status: "error",
         data: error,

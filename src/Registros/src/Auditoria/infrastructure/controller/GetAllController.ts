@@ -24,7 +24,7 @@ export class GetAllController{
                 throw ('Ocurio un error desconocido')
             }
         } catch (error) {
-            produceMessage('Error', `{"tarjet": "admin", "accion": ${String(error)}}`)
+            produceMessage('Error', `{"tarjet": "admin", "accion": "${String(error)}"}`)
             res.status(400).send({
                 status: 'Error',
                 msn: error

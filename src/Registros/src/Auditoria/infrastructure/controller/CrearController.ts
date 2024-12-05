@@ -38,7 +38,7 @@ export class CrearController{
                 throw ('Campos insuficientes por farvor de verificarlos')
             }
         } catch (error) {
-            produceMessage('Error', `{"tarjet": "registro", "accion": ${String(error)}}`)
+            produceMessage('Error', `{"tarjet": "registro", "accion": "${String(error)}"}`)
             res.status(400).send({
                 status: 'Error',
                 msn: error

@@ -59,7 +59,7 @@ export class GetAllController {
         throw (usuarios);
       }
     } catch (error) {
-      produceMessage('Error', `{"tarjet": "Cliente", "accion": ${String(error)}}`)
+      produceMessage('Error', `{"tarjet": "Cliente", "accion": "${String(error)}"}`)
       return res.status(400).send({
         status: "error",
         msn: error || "Ocurrió un error desconocido.",
