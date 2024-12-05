@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import axios from 'axios';
+import bcrypt from 'bcrypt';
 
 dotenv.config()
 
@@ -20,7 +21,7 @@ export async function RegistroCliente (req: Request, res:Response){
       if(!nombre&&!foto_perfil&&!password&&!id_lead&&!telefono&&!generos&&!tipo&&!ubicacion&&!tipo_evento){
         throw('Faltan campos')
       }
-  
+      
       const constenido = [
         nombre,
         generos,
@@ -39,12 +40,16 @@ export async function RegistroCliente (req: Request, res:Response){
         'password', 
         'telefono', 
       ]
-  
+      
       for (let index = 0; index < caractristicas.length; index++) {
         if(!caractristicas[index].test(constenido[index])){
           throw(`${nombres[index]} no valido`)
         }
       }
+
+      const saltRounds = 10
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(password, salt);
       const body = {
         'id_lead': id_lead,
         'nombre': nombre,
@@ -53,7 +58,7 @@ export async function RegistroCliente (req: Request, res:Response){
         'ubicacion': ubicacion,
         'foto_perfil': foto_perfil,
         'tipo_evento': tipo_evento,
-        'password': password,
+        'password': hashedPassword,
         'telefono': telefono
       }
       const respuesta = await axios.post(clientes, body, {

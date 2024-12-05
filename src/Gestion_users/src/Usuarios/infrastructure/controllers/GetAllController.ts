@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { GetAllUseCase } from "../../application/GetAllUseCase";
 import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
+import bcrypt from 'bcrypt';
 
 export class GetAllController {
   constructor(readonly getAllUseCase: GetAllUseCase) {}
@@ -14,12 +15,20 @@ export class GetAllController {
       console.log(usuarios)
       if (typeof(usuarios)!='string') {
         let usuariosFiltrados = usuarios;
-
         // Filtrar usuarios basados en otros filtros en query (excluyendo 'fields')
         Object.keys(filtros).forEach((key) => {
           if (key !== 'fields') {
-            usuariosFiltrados = usuariosFiltrados.filter((cliente: any) => {
-              return cliente[key] && String(cliente[key]) === String(filtros[key]);
+            usuariosFiltrados = usuariosFiltrados.filter(async (cliente: any) => {
+              if (key=='password'){
+                const isMatch = await bcrypt.compare(String(cliente[key]), String(filtros[key]));
+                if (isMatch){
+                  cliente[key]=true
+                }else{
+                  cliente[key]=false
+                }
+              }else{
+                return cliente[key] && String(cliente[key]) === String(filtros[key]);
+              }
             });
           }
         });
@@ -39,11 +48,15 @@ export class GetAllController {
               return filteredUser;
             }, {});
           } else {
-            // Campos predeterminados si 'fields' no se especifica
-            return {
-              id: usuario.uuid,
-              nombre: usuario.nombre,
-            };
+            if (usuario['password']){
+              // Campos predeterminados si 'fields' no se especifica
+              return {
+                id: usuario.uuid,
+                nombre: usuario.nombre,
+              };
+            }else{
+              return "Contraseña incorecta"
+            }
           }
         });
 

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import axios from 'axios';
+import bcrypt from 'bcrypt';
 
 dotenv.config()
 
@@ -14,7 +15,10 @@ export async function LoginCliente (req: Request, res:Response){
                 params: req.query
             })
         }else if(nombre&&password){
-            const params = {'nombre': nombre, 'password': password}
+            const saltRounds = 10
+            const salt = await bcrypt.genSalt(saltRounds);
+            const hashedPassword = await bcrypt.hash(String(password), salt);
+            const params = {'nombre': nombre, 'password': hashedPassword}
     
             respuesta = await axios.get(clientes, {
                 params: params,
