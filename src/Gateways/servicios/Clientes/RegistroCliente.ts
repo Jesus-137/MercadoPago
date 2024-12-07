@@ -17,6 +17,7 @@ export async function RegistroCliente (req: Request, res:Response){
       /^\d{10}$/,//telefono
     ];
     const {id_lead, foto_perfil, nombre, generos, tipo, ubicacion, tipo_evento, password, telefono} = req.body;
+    console.log(req.body)
     try {
       if(!nombre&&!foto_perfil&&!password&&!id_lead&&!telefono&&!generos&&!tipo&&!ubicacion&&!tipo_evento){
         throw('Faltan campos')
@@ -43,6 +44,7 @@ export async function RegistroCliente (req: Request, res:Response){
       
       for (let index = 0; index < caractristicas.length; index++) {
         if(!caractristicas[index].test(constenido[index])){
+          console.log(nombres[index])
           throw(`${nombres[index]} no valido`)
         }
       }

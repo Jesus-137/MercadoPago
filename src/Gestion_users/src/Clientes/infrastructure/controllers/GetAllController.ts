@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { GetAllUseCase } from "../../application/GetAllUseCase";
 import { produceMessage } from "../../../../../Rabbit/SendEventUseCase";
+import bcrypt from 'bcrypt';
 
 export class GetAllController {
   constructor(readonly getAllUseCase: GetAllUseCase) {}
@@ -18,8 +19,17 @@ export class GetAllController {
         // Filtrar usuarios por género musical, tipo de evento y ubicación
         Object.keys(filtros).forEach((filtro) => {
           if (filtro!=='fields') {
-            usuariosFiltrados = usuariosFiltrados.filter((cliente: any) => {
-              return cliente[filtro] && String(cliente[filtro]) === String(filtros[filtro]);
+            usuariosFiltrados = usuariosFiltrados.filter(async (cliente: any) => {
+              if (filtro=='password'){
+                const isMatch = await bcrypt.compare(String(cliente[filtro]), String(filtros[filtro]));
+                if (isMatch){
+                  cliente[filtro]=true
+                }else{
+                  cliente[filtro]=false
+                }
+              }else{
+                return cliente[filtro] && String(cliente[filtro]) === String(filtros[filtro]);
+              }
             });
           }
         });
@@ -39,15 +49,15 @@ export class GetAllController {
               return filteredUser;
             }, {});
           } else {
-            // Campos predeterminados si 'fields' no se especifica
-            return {
-              id: usuario.uuid,
-              nombre: usuario.nombre,
-              tipo: usuario.tipo,
-              tipo_evento: usuario.tipo_evento,
-              ubicacion: usuario.ubicacion,
-              generos: usuario.genero_musical,
-            };
+            if (usuario['password']){
+              // Campos predeterminados si 'fields' no se especifica
+              return {
+                id: usuario.uuid,
+                nombre: usuario.nombre,
+              };
+            }else{
+              return "Contraseña incorecta"
+            }
           }
         });
 

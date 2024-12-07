@@ -26,7 +26,7 @@ export class CrearController{
                                 correo: leads.correo
                             }
                         });
-                        produceMessage("notificacion", `{"sendBy": ${data.sendBy},"id": ${leads.uuid}, "telefono": ${leads.telefono}, "correo": ${leads.correo}}`)
+                        produceMessage("notificacion", `{"sendBy": "${data.sendBy}","id": "${leads.uuid}", "telefono": "${leads.telefono}", "correo": "${leads.correo}"}`)
                     }else{
                         throw (leads);
                     }
@@ -37,7 +37,7 @@ export class CrearController{
                 throw ('No se especifico por donde mandar la notificación')
             }
         } catch (error) {
-            produceMessage('Error', `{"tarjet": "Contacto", "accion": ${String(error)}}`)
+            produceMessage('Error', `{"tarjet": "Contacto", "accion": "${String(error)}"}`)
             res.status(400).send({
                 status: 'Error',
                 msn: error
