@@ -24,7 +24,7 @@ npm run build
 ```
 ## Running
 
-Para encender todos los mmicroservicios creado con nodejs.
+Para encender todos los mmicroservicios.
 ```bash
 npm run start:all
 ```
