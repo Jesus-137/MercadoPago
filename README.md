@@ -1,7 +1,7 @@
 <h1 align="center">Express Typescript Service Hexagonal</h1>
 
 <p align="center">
-  Una api para en la que se implemento el uso del mercado pago y mensajeria con whatsapp.
+  Api con micriservicios para la creación de una semi  red social en para cantantes o bandas.
 </p>
 
 ## Table of Contents
@@ -24,8 +24,18 @@ npm run build
 ```
 ## Running
 
+Para encender todos los mmicroservicios creado con nodejs.
 ```bash
-npm run start:dev
+npm run start:all
+```
+Para ejecutar el servicio del analizador de emociones.
+```bash
+python api.py
+```
+
+Para ejecutar el servicio de las predicciones de las publicaciones del artista o cliente.
+```bash
+python prediccion.py
 ```
 
 ## Running_tests
